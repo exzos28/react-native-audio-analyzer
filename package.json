@@ -13,6 +13,7 @@
     "android",
     "ios",
     "cpp",
+    "ffmpeg",
     "*.podspec",
     "!ios/build",
     "!android/build",

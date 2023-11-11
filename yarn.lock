@@ -10774,7 +10774,6 @@ __metadata:
     pod-install: ^0.1.0
     react: 18.2.0
     react-native: 0.72.6
-    react-native-document-picker: ^9.0.1
   languageName: unknown
   linkType: soft
 
@@ -10835,22 +10834,6 @@ __metadata:
   bin:
     bob: bin/bob
   checksum: 58e7c991d80adcd394613debafd9f0d5ce56ee666aa7940c67ac422cdeac09098e0d96cac2985f79d62256fb6ebad7cfc0c3e240df77bae8716d9d293f1f5c7d
-  languageName: node
-  linkType: hard
-
-"react-native-document-picker@npm:^9.0.1":
-  version: 9.0.1
-  resolution: "react-native-document-picker@npm:9.0.1"
-  dependencies:
-    invariant: ^2.2.4
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-    react-native-windows: "*"
-  peerDependenciesMeta:
-    react-native-windows:
-      optional: true
-  checksum: a8ad0bc2ed13290e8d7ff5f77aa7e35ffda9fa380a7d01d1286111e92656415985d61469a50567b8bcb67e42c41a36b89e879d0d08b40d3fdda171eaa08721e4
   languageName: node
   linkType: hard
 

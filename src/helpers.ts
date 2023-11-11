@@ -3,7 +3,7 @@ export function scale(arr: number[]) {
   const max = Math.max(...arr);
   const diff = max - min;
 
-  return arr.map(_ => (_ - min) / diff);
+  return arr.map((_) => (_ - min) / diff);
 }
 
 export function sample(arr: number[], newSize: number) {

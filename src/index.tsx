@@ -18,8 +18,8 @@ const AudioAnalyzer = NativeModules.AudioAnalyzer
     );
 
 export type AmplitudeData = {
-   amplitude: number;
-   timeInSeconds: number;
+  amplitude: number;
+  timeInSeconds: number;
   // Other amplitude data
 };
 

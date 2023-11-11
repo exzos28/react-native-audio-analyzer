@@ -1,0 +1,14 @@
+prefix=/Users/exzos/Downloads/ffmpeg-kit/prebuilt/android-x86/ffmpeg
+exec_prefix=${prefix}
+libdir=/Users/exzos/Downloads/ffmpeg-kit/prebuilt/android-x86/ffmpeg/lib
+includedir=/Users/exzos/Downloads/ffmpeg-kit/prebuilt/android-x86/ffmpeg/include
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 7.1.100
+Requires: 
+Requires.private: libavutil >= 58.2.100
+Conflicts:
+Libs: -L${libdir}  -lswscale 
+Libs.private: -lm -latomic
+Cflags: -I${includedir}

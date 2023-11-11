@@ -1,0 +1,14 @@
+prefix=/Users/exzos/Downloads/ffmpeg-kit/prebuilt/android-arm/ffmpeg
+exec_prefix=${prefix}
+libdir=/Users/exzos/Downloads/ffmpeg-kit/prebuilt/android-arm/ffmpeg/lib
+includedir=/Users/exzos/Downloads/ffmpeg-kit/prebuilt/android-arm/ffmpeg/include
+
+Name: libswresample
+Description: FFmpeg audio resampling library
+Version: 4.10.100
+Requires: 
+Requires.private: libavutil >= 58.2.100
+Conflicts:
+Libs: -L${libdir}  -lswresample 
+Libs.private: -lm -latomic
+Cflags: -I${includedir}

@@ -12,4 +12,8 @@
 @interface AudioAnalyzer : NSObject <RCTBridgeModule>
 #endif
 
+- (void)analyzeAudio:(NSString *)filename
+             resolver:(RCTPromiseResolveBlock)resolve
+             rejecter:(RCTPromiseRejectBlock)reject;
+
 @end

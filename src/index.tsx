@@ -17,6 +17,14 @@ const AudioAnalyzer = NativeModules.AudioAnalyzer
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return AudioAnalyzer.multiply(a, b);
+export type AmplitudeData = {
+   amplitude: number;
+   timeInSeconds: number;
+  // Other amplitude data
+};
+
+export function analyzeAudio(filepath: string): Promise<AmplitudeData[]> {
+  return AudioAnalyzer.analyzeAudio(filepath);
 }
+
+export * from './helpers';

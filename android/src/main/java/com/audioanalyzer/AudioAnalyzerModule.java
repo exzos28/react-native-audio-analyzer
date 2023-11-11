@@ -6,6 +6,10 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.module.annotations.ReactModule;
 
 @ReactModule(name = AudioAnalyzerModule.NAME)
@@ -26,12 +30,23 @@ public class AudioAnalyzerModule extends ReactContextBaseJavaModule {
     System.loadLibrary("cpp");
   }
 
-  private static native double nativeMultiply(double a, double b);
+  private static native AmplitudeData[] analyzeAudio(String filepath);
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
   @ReactMethod
-  public void multiply(double a, double b, Promise promise) {
-    promise.resolve(nativeMultiply(a, b));
+  public void analyzeAudio(String filepath, Promise promise) {
+    try {
+      AmplitudeData[] analyze = analyzeAudio(filepath);
+
+      WritableArray resultArray = new WritableNativeArray();
+      for (AmplitudeData data : analyze) {
+        WritableMap dataMap = new WritableNativeMap();
+        dataMap.putDouble("timeInSeconds", data.getTimeInSeconds());
+        dataMap.putDouble("amplitude", data.getAmplitude());
+        resultArray.pushMap(dataMap);
+      }
+      promise.resolve(resultArray);
+    } catch (Exception e) {
+      promise.reject(e);
+    }
   }
 }

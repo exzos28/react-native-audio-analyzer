@@ -1,3 +1,13 @@
+def WORKING_DIRECTORY = "ffmpeg"
+
+def SO_SRC_URL = "https://github.com/exzos28/ffmpeg-built/archive/refs/tags/6.1.zip"
+//TODO: Change name
+def ARTIFACT_SO_LOCAL = "ffmpeg-built-6.1"
+
+def HEADER_SRC_URL = "https://github.com/exzos28/ffmpeg-headers/archive/refs/tags/5.1.zip"
+//TODO: Change name
+def ARTIFACT_HEADERS_LOCAL = "ffmpeg-headers-5.1"
+
 buildscript {
   repositories {
     google()
@@ -6,6 +16,7 @@ buildscript {
 
   dependencies {
     classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "de.undercouch:gradle-download-task:5.0.1"
   }
 }
 
@@ -14,6 +25,7 @@ def isNewArchitectureEnabled() {
 }
 
 apply plugin: "com.android.library"
+apply plugin: "de.undercouch.download"
 
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
@@ -81,6 +93,37 @@ android {
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  tasks.register('downloadAarFile', Download) {
+    src SO_SRC_URL
+    onlyIfNewer true
+    overwrite false
+    dest layout.buildDirectory.file(ARTIFACT_SO_LOCAL)
+  }
+
+  tasks.register('downloadAndUnzipAarFile', Copy) {
+    dependsOn downloadAarFile
+    from zipTree(downloadAarFile.dest)
+    into layout.buildDirectory.dir(WORKING_DIRECTORY)
+  }
+
+  tasks.register('downloadHeaders', Download) {
+    src HEADER_SRC_URL
+    onlyIfNewer true
+    overwrite false
+    dest layout.buildDirectory.file(ARTIFACT_HEADERS_LOCAL)
+  }
+
+  tasks.register('downloadAndUnzipHeaders', Copy) {
+    dependsOn downloadHeaders
+    from zipTree(downloadHeaders.dest)
+    into layout.buildDirectory.dir(WORKING_DIRECTORY)
+  }
+
+  afterEvaluate {
+    preBuild.dependsOn downloadAndUnzipAarFile
+    preBuild.dependsOn downloadAndUnzipHeaders
   }
 }
 

@@ -43,7 +43,8 @@ export default function App() {
   const [result, setResult] = useState<AmplitudeData[]>([]);
 
   useEffect(() => {
-    analyzeAudio('<uri to audio file>') // Local location on disk. !Important!: You must take care of downloading the file and give the application reading permissions
+    // Local location on disk. !Important!: You must take care of downloading the file and give the application reading permissions
+    analyzeAudio('<uri to audio file>')
       .then(res => setResult(res))
       .catch(err => {
         // handle error

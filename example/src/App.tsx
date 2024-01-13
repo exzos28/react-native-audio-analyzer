@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, View } from 'react-native';
 import { analyzeAudio, scale, sample } from 'react-native-audio-analyzer';
 import type { AmplitudeData } from 'react-native-audio-analyzer';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 export default function App() {
   const [result, setResult] = useState<AmplitudeData[]>([]);
 
-  useEffect(() => {
-    analyzeAudio('<file uri>')
-      .then((res) => {
-        setResult(res);
-      })
-      .catch((err) => {
-        if (err instanceof Error) {
-          console.log(err);
-          Alert.alert('Error', err.message);
-        }
-      });
+  const start = useCallback(async () => {
+    try {
+      const response = await ReactNativeBlobUtil.config({
+        fileCache: true,
+      }).fetch(
+        'GET',
+        'https://file-examples.com/storage/fe61380d0265a2c7a970ef9/2017/11/file_example_WAV_10MG.wav',
+        {}
+      );
+      const path = response.path();
+      const data = await analyzeAudio(path);
+      setResult(data);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (
     <View style={styles.container}>
+      <Button title="Start" onPress={start} />
       <ScrollView horizontal style={styles.scroll}>
         <View style={styles.row}>
           {result.length > 0 &&

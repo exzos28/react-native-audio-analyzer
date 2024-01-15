@@ -1,27 +1,33 @@
 export function scale(arr: number[]) {
+  if (arr.length === 0) {
+    return [];
+  }
+
   const min = Math.min(...arr);
   const max = Math.max(...arr);
   const diff = max - min;
 
-  return arr.map((_) => (_ - min) / diff);
+  if (diff === 0) {
+    // If diff is 0, all elements in the array are the same.
+    // To avoid division by zero, return an array of the same length with 0 values.
+    return arr.map(() => 0);
+  }
+
+  return arr.map((value) => (value - min) / diff);
 }
 
 export function sample(arr: number[], newSize: number) {
   const originalSize = arr.length;
-  const ratio = originalSize / newSize;
-  const result = [];
+
+  if (newSize === 0) {
+    return [];
+  }
+
+  const result: number[] = [];
 
   for (let i = 0; i < newSize; i++) {
-    const startIndex = Math.floor(i * ratio);
-    const endIndex = Math.floor((i + 1) * ratio);
-    let sum = 0;
-
-    for (let j = startIndex; j < endIndex; j++) {
-      sum += arr[j]!;
-    }
-
-    const average = sum / (endIndex - startIndex);
-    result.push(average);
+    const index = Math.floor((i / newSize) * originalSize);
+    result.push(arr[index] ?? 0);
   }
 
   return result;

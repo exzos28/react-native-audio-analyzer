@@ -16,7 +16,7 @@ cd ios && pod install
 With this library, unleash creativity by generating captivating audio waveforms from your audio tracks, providing an engaging visual representation of sound.
 
 <p float="left">
-  <img src="images/image.png" width="200"  alt="android"/>
+  <img src="images/image.png" width="400"  alt="android"/>
 </p>
 
 ## Features ✨

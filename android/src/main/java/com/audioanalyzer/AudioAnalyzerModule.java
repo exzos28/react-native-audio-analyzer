@@ -30,12 +30,12 @@ public class AudioAnalyzerModule extends ReactContextBaseJavaModule {
     System.loadLibrary("cpp");
   }
 
-  private static native AmplitudeData[] analyzeAudio(String filepath);
+  private static native AmplitudeData[] analyzeAudio(String filepath, double groupBySeconds);
 
   @ReactMethod
-  public void analyzeAudio(String filepath, Promise promise) {
+  public void analyzeAudio(String filepath, double groupBySeconds, Promise promise) {
     try {
-      AmplitudeData[] analyze = analyzeAudio(filepath);
+      AmplitudeData[] analyze = analyzeAudio(filepath, groupBySeconds);
 
       WritableArray resultArray = new WritableNativeArray();
       for (AmplitudeData data : analyze) {

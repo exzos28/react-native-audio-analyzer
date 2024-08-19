@@ -4,7 +4,7 @@
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_com_audioanalyzer_AudioAnalyzerModule_analyzeAudio(JNIEnv *env, jclass obj, jstring filePath) {
+Java_com_audioanalyzer_AudioAnalyzerModule_analyzeAudio(JNIEnv *env, jclass obj, jstring filePath, jdouble groupBySeconds) {
 
     // Step 1: Convert Java string to C++ string
     const char *nativeFilePath = env->GetStringUTFChars(filePath, nullptr);
@@ -12,7 +12,7 @@ Java_com_audioanalyzer_AudioAnalyzerModule_analyzeAudio(JNIEnv *env, jclass obj,
 
     // Step 2: Call the analyzeAudio function
     audioanalyzer::FFmpegException errorPtr = nullptr;
-    std::vector<audioanalyzer::AmplitudeData> amplitudeData = audioanalyzer::analyzeAudio(nativeFilePath, &errorPtr);
+    std::vector<audioanalyzer::AmplitudeData> amplitudeData = audioanalyzer::analyzeAudio(nativeFilePath, groupBySeconds, &errorPtr);
 
 
     if (errorPtr.getMessage()) {

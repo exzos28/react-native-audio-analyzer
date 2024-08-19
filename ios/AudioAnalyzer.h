@@ -13,6 +13,7 @@
 #endif
 
 - (void)analyzeAudio:(NSString *)filename
+            groupBySeconds:(nonnull NSNumber *)groupBySeconds
              resolver:(RCTPromiseResolveBlock)resolve
              rejecter:(RCTPromiseRejectBlock)reject;
 

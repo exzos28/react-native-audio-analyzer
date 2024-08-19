@@ -21,7 +21,7 @@ namespace audioanalyzer {
         const char* getMessage() const noexcept;
     };
 
-    std::vector<AmplitudeData> analyzeAudio(const char *filename, FFmpegException *errorPtr);
+    std::vector<AmplitudeData> analyzeAudio(const char *filename, double groupBySeconds, FFmpegException *errorPtr);
 }
 
 #endif // AUDIOANALYZER_H

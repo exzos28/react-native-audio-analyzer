@@ -23,8 +23,11 @@ export type AmplitudeData = {
   // Other amplitude data
 };
 
-export function analyzeAudio(filepath: string): Promise<AmplitudeData[]> {
-  return AudioAnalyzer.analyzeAudio(filepath);
+export function analyzeAudio(
+  filepath: string,
+  groupBySeconds: number = 1
+): Promise<AmplitudeData[]> {
+  return AudioAnalyzer.analyzeAudio(filepath, groupBySeconds);
 }
 
 export * from './helpers';

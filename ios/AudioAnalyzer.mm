@@ -6,6 +6,7 @@
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(analyzeAudio:(NSString *)filename
+                  groupBySeconds:(nonnull NSNumber *)groupBySeconds
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -14,7 +15,9 @@ RCT_EXPORT_METHOD(analyzeAudio:(NSString *)filename
 
         const char *cFilename = [filename UTF8String];
 
-        std::vector<audioanalyzer::AmplitudeData> result = audioanalyzer::analyzeAudio(cFilename, &ffmpegError);
+        double groupBySecondsValue = [groupBySeconds doubleValue];
+
+        std::vector<audioanalyzer::AmplitudeData> result = audioanalyzer::analyzeAudio(cFilename, groupBySecondsValue, &ffmpegError);
 
         if (ffmpegError.getMessage()) {
             NSString *errorMessage = [NSString stringWithUTF8String:ffmpegError.getMessage()];

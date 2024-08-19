@@ -16,8 +16,7 @@ cd ios && pod install
 With this library, unleash creativity by generating captivating audio waveforms from your audio tracks, providing an engaging visual representation of sound.
 
 <p float="left">
-  <img src="images/android.png" width="200"  alt="android"/>
-  <img src="images/ios.png" width="200" alt="ios"/>
+  <img src="images/image.png" width="200"  alt="android"/>
 </p>
 
 ## Features ✨
@@ -34,59 +33,97 @@ With this library, unleash creativity by generating captivating audio waveforms 
 ## Usage 🎶
 
 ```js
-import { analyzeAudio, scale, sample } from 'react-native-audio-analyzer';
+import React, { useCallback, useState } from 'react';
+
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {
+  analyzeAudio,
+  scale,
+  sample,
+  robustScale,
+  trimmedScale,
+} from 'react-native-audio-analyzer';
+import type { AmplitudeData } from 'react-native-audio-analyzer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 export default function App() {
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState<AmplitudeData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const start = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await ReactNativeBlobUtil.config({
         fileCache: true,
       }).fetch(
         'GET',
-        'https://file-examples.com/storage/fe61380d0265a2c7a970ef9/2017/11/file_example_WAV_10MG.wav',
+        'https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3',
         {}
       );
       const path = response.path();
-      const data = await analyzeAudio(path);
+      const data = await analyzeAudio(path, 2);
       setResult(data);
     } catch (error) {
-      console.log(error);
+      Alert.alert('Error', String(error));
+    } finally {
+      setIsLoading(false);
     }
   }, []);
+
+  const amplitudes = result.map((_) => _.amplitude);
+
+  const results = [
+    {
+      title: 'Trimmed scale:',
+      data: trimmedScale(amplitudes).map((value, index) => (
+        <View key={index} style={[styles.item, { height: value * 100 }]} />
+      )),
+    },
+    {
+      title: 'Robust scale:',
+      data: robustScale(amplitudes).map((value, index) => (
+        <View key={index} style={[styles.item, { height: value * 100 }]} />
+      )),
+    },
+    {
+      title: 'Scale + sample:',
+      data: scale(sample(amplitudes, 35)).map((value, index) => (
+        <View key={index} style={[styles.item, { height: value * 100 }]} />
+      )),
+    },
+    {
+      title: 'Scale:',
+      data: scale(amplitudes).map((value, index) => (
+        <View key={index} style={[styles.item, { height: value * 100 }]} />
+      )),
+    },
+  ];
 
   return (
     <View style={styles.container}>
       <Button title="Start" onPress={start} />
-      <ScrollView horizontal style={styles.scroll}>
-        <View style={styles.row}>
-          {result.length > 0 &&
-            scale(result.map((_) => _.amplitude)).map((value, index) => (
-              <View
-                key={index}
-                style={[styles.item, { height: value * 100 }]}
-              />
-            ))}
+      {isLoading ? (
+        <ActivityIndicator style={styles.loader} size="large" />
+      ) : (
+        <View>
+          {results.map((_, index) => (
+            <View style={styles.example} key={index}>
+              <Text style={styles.title}>{_.title}</Text>
+              <ScrollView horizontal style={styles.scroll}>
+                <View style={styles.row}>{_.data}</View>
+              </ScrollView>
+            </View>
+          ))}
         </View>
-      </ScrollView>
-      <ScrollView horizontal style={styles.scroll}>
-        <View style={styles.row}>
-          {result.length > 0 &&
-            scale(
-              sample(
-                result.map((_) => _.amplitude),
-                20
-              )
-            ).map((value, index) => (
-              <View
-                key={index}
-                style={[styles.item, { height: value * 100 }]}
-              />
-            ))}
-        </View>
-      </ScrollView>
+      )}
     </View>
   );
 }
@@ -94,14 +131,21 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#ffffff',
+  },
+  loader: {
+    padding: 30,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  title: {
+    marginBottom: 5,
+  },
+  example: {
+    padding: 10,
   },
   scroll: {
     maxHeight: 200,

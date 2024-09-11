@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   ActivityIndicator,
@@ -10,11 +10,11 @@ import {
   View,
 } from 'react-native';
 import {
-  analyzeAudio,
   scale,
   sample,
   robustScale,
   trimmedScale,
+  analyzeAudio,
 } from 'react-native-audio-analyzer';
 import type { AmplitudeData } from 'react-native-audio-analyzer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
@@ -34,7 +34,7 @@ export default function App() {
         {}
       );
       const path = response.path();
-      const data = await analyzeAudio(path, 2);
+      const data = analyzeAudio(path, 2);
       setResult(data);
     } catch (error) {
       Alert.alert('Error', String(error));

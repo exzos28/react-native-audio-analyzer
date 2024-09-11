@@ -9,6 +9,9 @@ def HEADER_SRC_URL = "https://github.com/exzos28/ffmpeg-headers/archive/refs/tag
 def ARTIFACT_HEADERS_LOCAL = "ffmpeg-headers-5.1"
 
 buildscript {
+  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
+  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["AudioAnalyzer_kotlinVersion"]
+
   repositories {
     google()
     mavenCentral()
@@ -16,8 +19,17 @@ buildscript {
 
   dependencies {
     classpath "com.android.tools.build:gradle:7.2.1"
-    classpath "de.undercouch:gradle-download-task:5.0.1"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+
+    classpath("de.undercouch:gradle-download-task:5.0.1")
   }
+}
+
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
 def isNewArchitectureEnabled() {
@@ -25,10 +37,19 @@ def isNewArchitectureEnabled() {
 }
 
 apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
 apply plugin: "de.undercouch.download"
+
 
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
+}
+
+def resolveBuildType() {
+  Gradle gradle = getGradle()
+  String tskReqStr = gradle.getStartParameter().getTaskRequests()['args'].toString()
+
+  return tskReqStr.contains('Release') ? 'release' : 'debug'
 }
 
 def getExtOrDefault(name) {
@@ -68,16 +89,34 @@ android {
 
     externalNativeBuild {
       cmake {
+        arguments "-DANDROID_STL=c++_shared"
         cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
-        abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+        abiFilters (*reactNativeArchitectures())
       }
     }
+  }
+
+  buildFeatures {
+    prefab true
   }
 
   externalNativeBuild {
     cmake {
       path "CMakeLists.txt"
     }
+  }
+
+  packagingOptions {
+    doNotStrip resolveBuildType() == 'debug' ? "**/**/*.so" : ''
+    excludes = [
+      "META-INF",
+      "META-INF/**",
+      "**/libjsi.so",
+      "**/libc++_shared.so",
+      "**/libreact_nativemodule_core.so",
+      "**/libturbomodulejsijni.so",
+      "**/libfbjni.so"
+    ]
   }
 
   buildTypes {
@@ -94,6 +133,7 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+
 
   tasks.register('downloadAarFile', Download) {
     src SO_SRC_URL
@@ -132,11 +172,13 @@ repositories {
   google()
 }
 
+def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
   // For < 0.71, this will be from the local maven repo
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 

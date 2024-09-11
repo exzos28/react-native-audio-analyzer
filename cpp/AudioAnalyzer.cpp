@@ -1,4 +1,4 @@
-#include "react-native-audio-analyzer.h"
+#include "AudioAnalyzer.h"
 #include <vector>
 #include <cmath>
 #include <stdexcept>
@@ -10,46 +10,36 @@ extern "C" {
 
 namespace audioanalyzer {
 
-const char* FFmpegException::getMessage() const noexcept {
-    return message;
-}
-
-std::vector<AmplitudeData> analyzeAudio(const char *filename, double groupBySeconds, FFmpegException *errorPtr) {
+std::vector<AmplitudeData> analyzeAudio(const std::string& filename, double groupBySeconds) {
     std::vector<AmplitudeData> amplitudeData;
 
-    // Проверка корректности groupBySeconds
     if (groupBySeconds <= 0) {
-        *errorPtr = FFmpegException("groupBySeconds must be greater than 0");
-        return amplitudeData;
+        throw FFmpegException("groupBySeconds must be greater than 0");
     }
 
     // Allocate memory for the AVFormatContext
     AVFormatContext *formatContext = avformat_alloc_context();
     if (!formatContext) {
-        *errorPtr = FFmpegException("Failed to allocate AVFormatContext");
-        return amplitudeData;
+        throw FFmpegException("Failed to allocate AVFormatContext");
     }
 
     // Open the input file
-    if (avformat_open_input(&formatContext, filename, nullptr, nullptr) != 0) {
+    if (avformat_open_input(&formatContext, filename.c_str(), nullptr, nullptr) != 0) {
         avformat_free_context(formatContext);
-        *errorPtr = FFmpegException("Failed to open input file");
-        return amplitudeData;
+        throw FFmpegException("Failed to open input file");
     }
 
     // Find stream information
     if (avformat_find_stream_info(formatContext, nullptr) < 0) {
         avformat_close_input(&formatContext);
-        *errorPtr = FFmpegException("Failed to find stream information");
-        return amplitudeData;
+        throw FFmpegException("Failed to find stream information");
     }
 
     // Find the best audio stream
     int audioStreamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
     if (audioStreamIndex < 0) {
         avformat_close_input(&formatContext);
-        *errorPtr = FFmpegException("Failed to find audio stream");
-        return amplitudeData;
+        throw FFmpegException("Failed to find audio stream");
     }
 
     // Get codec parameters and find the corresponding decoder
@@ -57,32 +47,28 @@ std::vector<AmplitudeData> analyzeAudio(const char *filename, double groupBySeco
     const AVCodec *codec = avcodec_find_decoder(codecParameters->codec_id);
     if (!codec) {
         avformat_close_input(&formatContext);
-        *errorPtr = FFmpegException("Failed to find codec");
-        return amplitudeData;
+        throw FFmpegException("Failed to find codec");
     }
 
     // Allocate memory for the AVCodecContext
     AVCodecContext *codecContext = avcodec_alloc_context3(codec);
     if (!codecContext) {
         avformat_close_input(&formatContext);
-        *errorPtr = FFmpegException("Failed to allocate AVCodecContext");
-        return amplitudeData;
+        throw FFmpegException("Failed to allocate AVCodecContext");
     }
 
     // Set codec parameters
     if (avcodec_parameters_to_context(codecContext, codecParameters) < 0) {
         avformat_close_input(&formatContext);
         avcodec_free_context(&codecContext);
-        *errorPtr = FFmpegException("Failed to set codec parameters");
-        return amplitudeData;
+        throw FFmpegException("Failed to set codec parameters");
     }
 
     // Open the codec
     if (avcodec_open2(codecContext, codec, nullptr) < 0) {
         avformat_close_input(&formatContext);
         avcodec_free_context(&codecContext);
-        *errorPtr = FFmpegException("Failed to open codec");
-        return amplitudeData;
+        throw FFmpegException("Failed to open codec");
     }
 
     // Allocate memory for AVPacket and AVFrame

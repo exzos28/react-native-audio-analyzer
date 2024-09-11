@@ -1,46 +1,44 @@
+#import <React/RCTBridge+Private.h>
+#import <jsi/jsi.h>
+
 #import "AudioAnalyzer.h"
-#import "react-native-audio-analyzer.h"
-#include <stdexcept>
+
+using namespace facebook;
 
 @implementation AudioAnalyzer
-RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(analyzeAudio:(NSString *)filename
-                  groupBySeconds:(nonnull NSNumber *)groupBySeconds
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-{
-    @try {
-        audioanalyzer::FFmpegException ffmpegError = nullptr;
+RCT_EXPORT_MODULE(AudioAnalyzer)
 
-        const char *cFilename = [filename UTF8String];
+#pragma mark - Lifecycle
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
 
-        double groupBySecondsValue = [groupBySeconds doubleValue];
+#pragma mark - Core
 
-        std::vector<audioanalyzer::AmplitudeData> result = audioanalyzer::analyzeAudio(cFilename, groupBySecondsValue, &ffmpegError);
-
-        if (ffmpegError.getMessage()) {
-            NSString *errorMessage = [NSString stringWithUTF8String:ffmpegError.getMessage()];
-            reject(@"ffmpeg", errorMessage, nil);
-            return;
-        }
-
-        NSMutableArray *outputArray = [NSMutableArray array];
-        for (const auto &data : result) {
-            NSDictionary *amplitudeData = @{
-                @"amplitude": @(data.amplitude),
-                @"timeInSeconds": @(data.timeInSeconds)
-                // Other amplitude data
-            };
-            [outputArray addObject:amplitudeData];
-        }
-
-        resolve(outputArray);
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
+    AudioAnalyzer *__weak weakSelf = self;
+    RCTBridge *bridge = self.bridge;
+    
+    if (bridge == nullptr) {
+        return @false;
     }
-    @catch (...) {
-        // Catch other exceptions and handle them accordingly
-        reject(@"UnknownError", @"An unknown error occurred", nil);
-    }
+
+    registerAudioAnalyzerHostObject(bridge, weakSelf);
+
+    return @true;
+}
+
+void registerAudioAnalyzerHostObject(RCTBridge* bridge, AudioAnalyzer* weakSelf) {
+    std::shared_ptr<react::CallInvoker> callInvoker = bridge.jsCallInvoker;
+    jsi::Runtime* runtime = reinterpret_cast<jsi::Runtime*>(bridge.runtime);
+    auto analyzerRuntime = std::make_shared<AnalyzerRuntime>(*runtime, callInvoker);
+
+    auto hostObject = jsi::Object::createFromHostObject(*runtime, analyzerRuntime);
+
+    runtime->global().setProperty(*runtime, "__EXZOS_ANALYZER__", std::move(hostObject));
 }
 
 @end
+
+#pragma mark - End

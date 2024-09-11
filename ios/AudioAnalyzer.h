@@ -1,20 +1,16 @@
-#ifdef __cplusplus
-#import "react-native-audio-analyzer.h"
-#endif
-
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNAudioAnalyzerSpec.h"
-
-@interface AudioAnalyzer : NSObject <NativeAudioAnalyzerSpec>
-#else
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
+#include "AnalyzerRuntime.h"
 
-@interface AudioAnalyzer : NSObject <RCTBridgeModule>
-#endif
+#import <string>
 
-- (void)analyzeAudio:(NSString *)filename
-            groupBySeconds:(nonnull NSNumber *)groupBySeconds
-             resolver:(RCTPromiseResolveBlock)resolve
-             rejecter:(RCTPromiseRejectBlock)reject;
+@interface RCTBridge (BridgeWithRuntime)
+
+- (void *)runtime;
+- (std::shared_ptr<facebook::react::CallInvoker>)jsCallInvoker;
+
+@end
+
+@interface AudioAnalyzer : RCTEventEmitter<RCTBridgeModule>
 
 @end

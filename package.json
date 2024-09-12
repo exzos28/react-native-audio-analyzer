@@ -1,6 +1,6 @@
 {
   "name": "react-native-audio-analyzer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Library for audio analyze",
   "source": "./src/index.ts",
   "main": "./lib/commonjs/index.js",

@@ -4,13 +4,6 @@ A powerful library designed for React Native to visualize audio tracks, extract 
 
 This package offers robust tools that enable developers to process audio files efficiently, obtaining amplitude arrays for in-depth analysis or creating visually appealing audio waveforms within React Native applications.
 
-## Installation 🚀
-
-```sh
-yarn add react-native-audio-analyzer
-cd ios && pod install
-```
-
 ## Create Stunning Audio Waveforms 🌊
 
 With this library, unleash creativity by generating captivating audio waveforms from your audio tracks, providing an engaging visual representation of sound.
@@ -19,6 +12,16 @@ With this library, unleash creativity by generating captivating audio waveforms 
   <img src="images/image.png" width="300"  alt="example"/>
 </p>
 
+## Usage 🎶
+
+Usage example you can [find here](example/src/App.tsx)
+
+## Installation 🚀
+
+```sh
+yarn add react-native-audio-analyzer
+cd ios && pod install
+```
 ## Features ✨
 
 - __Audio Analysis__: Easily analyze audio tracks to obtain amplitude data for visualization or analysis purposes.
@@ -29,10 +32,6 @@ With this library, unleash creativity by generating captivating audio waveforms 
 
 - __Platform Compatibility__: Compatible with both Android and iOS platforms, ensuring a consistent experience across devices.
 
-
-## Usage 🎶
-
-Usage example you can [find here](example/src/App.tsx)
 
 ## Contributing 🤝
 We welcome [contributions](CONTRIBUTING.md)! Learn more about how to contribute to this repository by checking out our contributing guide and development workflow.

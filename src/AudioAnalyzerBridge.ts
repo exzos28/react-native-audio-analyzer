@@ -1,5 +1,4 @@
 export interface AudioAnalyzerBridge {
-  multiply(a: number, b: number): number;
   analyze(filepath: string, groupBySeconds: number): AmplitudeData[];
 }
 

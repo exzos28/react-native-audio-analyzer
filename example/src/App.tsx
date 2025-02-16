@@ -9,12 +9,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import {
+import AudioAnalyzer, {
   scale,
   sample,
   robustScale,
   trimmedScale,
-  analyzeAudio,
 } from 'react-native-audio-analyzer';
 import type { AmplitudeData } from 'react-native-audio-analyzer';
 import ReactNativeBlobUtil from 'react-native-blob-util';
@@ -34,7 +33,7 @@ export default function App() {
         {}
       );
       const path = response.path();
-      const data = analyzeAudio(path, 2);
+      const data = AudioAnalyzer.analyze(path, 2);
       setResult(data);
     } catch (error) {
       Alert.alert('Error', String(error));

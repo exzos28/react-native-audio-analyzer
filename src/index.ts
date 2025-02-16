@@ -10,13 +10,7 @@ TestAppModule.install();
 // @ts-ignore
 const bridge = global.__EXZOS_ANALYZER__ as unknown as AudioAnalyzerBridge;
 
-/**
- * @deprecated Please, use default export instead.
- */
-const analyzeAudio = bridge.analyze;
-
 export type { AmplitudeData };
 
-export { analyzeAudio };
 export * from './helpers';
 export default bridge;

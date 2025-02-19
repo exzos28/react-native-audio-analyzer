@@ -1,6 +1,6 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#include "AnalyzerRuntime.h"
+#import <ReactCommon/CallInvoker.h>
 
 #import <string>
 
@@ -11,6 +11,6 @@
 
 @end
 
-@interface AudioAnalyzer : RCTEventEmitter<RCTBridgeModule>
+@interface AudioAnalyzerModule : RCTEventEmitter<RCTBridgeModule>
 
 @end

@@ -9,7 +9,7 @@ import com.facebook.react.turbomodule.core.interfaces.CallInvokerHolder
 class AudioAnalyzerModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
     override fun getName() = NAME
     companion object {
-        const val NAME = "AudioAnalyzer"
+        const val NAME = "AudioAnalyzerModule"
     }
 
     @ReactMethod(isBlockingSynchronousMethod = true)

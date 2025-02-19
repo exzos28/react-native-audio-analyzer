@@ -1,11 +1,11 @@
 import { NativeModules } from 'react-native';
-import type { AudioAnalyzerModule } from './AudioAnalyzerModule';
+import type { AudioAnalyzerOnLoad } from './AudioAnalyzerOnLoad';
 import type { AmplitudeData, AudioAnalyzerBridge } from './AudioAnalyzerBridge';
 
-export const TestAppModule =
-  NativeModules?.AudioAnalyzer as AudioAnalyzerModule;
+export const AudioAnalyzerModule =
+  NativeModules?.AudioAnalyzerModule as AudioAnalyzerOnLoad;
 
-TestAppModule.install();
+AudioAnalyzerModule.install();
 
 // @ts-ignore
 const bridge = global.__EXZOS_ANALYZER__ as unknown as AudioAnalyzerBridge;

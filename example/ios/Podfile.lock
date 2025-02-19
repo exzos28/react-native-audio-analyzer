@@ -1238,7 +1238,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-audio-analyzer (2.0.2):
+  - react-native-audio-analyzer (2.1.0):
     - DoubleConversion
     - ffmpeg-kit-ios-audio (= 6.0)
     - glog
@@ -1766,7 +1766,7 @@ SPEC CHECKSUMS:
   React-logger: 7e56c9eceafd7f45e98c16cb42ff3c9966c67119
   React-Mapbuffer: e68dd904f0f3a84dd35989288ed3bcf5e37f9737
   React-microtasksnativemodule: ca8806e64625be04b8f3d9f31f66508d02c42555
-  react-native-audio-analyzer: 868944467bfe28fe9f22155d08fa75ee43ed0e78
+  react-native-audio-analyzer: 4ea0de6a260590c3f66ec9e1da991163ed0b46fd
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
   React-nativeconfig: 4a9543185905fe41014c06776bf126083795aed9
   React-NativeModulesApple: f6b6dc0998c945dd113858f1fc12e5e5f0da0990

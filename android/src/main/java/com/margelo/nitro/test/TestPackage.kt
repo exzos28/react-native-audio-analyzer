@@ -1,4 +1,4 @@
-package com.test
+package com.margelo.nitro.test
 
 import com.facebook.react.TurboReactPackage
 import com.facebook.react.bridge.NativeModule

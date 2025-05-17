@@ -63,6 +63,23 @@ android {
     }
   }
 
+  def miniaudioHeader = file("${layout.buildDirectory.asFile.get()}/download-cache/miniaudio.h")
+  def miniaudioUrl = "https://raw.githubusercontent.com/mackron/miniaudio/master/miniaudio.h"
+
+  task downloadMiniaudioHeader {
+    outputs.file miniaudioHeader
+    doLast {
+      if (!miniaudioHeader.exists()) {
+        miniaudioHeader.parentFile.mkdirs()
+        new URL(miniaudioUrl).withInputStream { input ->
+          miniaudioHeader.withOutputStream { output -> output << input }
+        }
+      }
+    }
+  }
+
+  preBuild.dependsOn downloadMiniaudioHeader
+
   packagingOptions {
     excludes = [
             "META-INF",
@@ -126,4 +143,3 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation project(":react-native-nitro-modules")
 }
-

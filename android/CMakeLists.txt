@@ -1,7 +1,7 @@
-project(test)
+project(analyzer)
 cmake_minimum_required(VERSION 3.9.0)
 
-set(PACKAGE_NAME test)
+set(PACKAGE_NAME analyzer)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CACHE_DIR ${CMAKE_SOURCE_DIR}/build)
@@ -17,7 +17,7 @@ add_library(
 )
 
 # Add Nitrogen specs :)
-include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/test+autolinking.cmake)
+include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/analyzer+autolinking.cmake)
 
 # Set up local includes
 include_directories("src/main/cpp" "../cpp")

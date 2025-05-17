@@ -1,16 +1,16 @@
 {
   "$schema": "https://nitro.margelo.com/nitro.schema.json",
-  "cxxNamespace": ["test"],
+  "cxxNamespace": ["analyzer"],
   "ios": {
-    "iosModuleName": "Test"
+    "iosModuleName": "RNAudioAnalyzer"
   },
   "android": {
-    "androidNamespace": ["test"],
-    "androidCxxLibName": "test"
+    "androidNamespace": ["analyzer"],
+    "androidCxxLibName": "analyzer"
   },
   "autolinking": {
-    "Test": {
-      "cpp": "HybridTest"
+    "Analyzer": {
+      "cpp": "AudioAnalyzer"
     }
   },
   "ignorePaths": ["node_modules"]

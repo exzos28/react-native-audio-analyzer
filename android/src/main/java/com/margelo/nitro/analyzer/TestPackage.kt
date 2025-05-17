@@ -1,11 +1,11 @@
-package com.margelo.nitro.test
+package com.margelo.nitro.analyzer
 
 import com.facebook.react.TurboReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfoProvider
 
-class TestPackage : TurboReactPackage() {
+class AnalyzerPackage : TurboReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
         return null
     }
@@ -16,7 +16,7 @@ class TestPackage : TurboReactPackage() {
 
     companion object {
         init {
-            System.loadLibrary("test")
+            System.loadLibrary("analyzer")
         }
     }
 }

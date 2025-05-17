@@ -1,8 +1,9 @@
 import { NitroModules } from 'react-native-nitro-modules';
-import type { Test } from './Test.nitro';
+import type { Analyzer } from './Analyzer.nitro';
 
-const TestHybridObject = NitroModules.createHybridObject<Test>('Test');
+const AnalyzerHybridObject =
+  NitroModules.createHybridObject<Analyzer>('Analyzer');
 
 export function computeAmplitude(filePath: string, outputSampleCount: number) {
-  return TestHybridObject.computeAmplitude(filePath, outputSampleCount);
+  return AnalyzerHybridObject.computeAmplitude(filePath, outputSampleCount);
 }

@@ -1,0 +1,17 @@
+{
+  "cxxNamespace": ["test"],
+  "ios": {
+    "iosModuleName": "Test"
+  },
+  "android": {
+    "androidNamespace": ["test"],
+    "androidCxxLibName": "test"
+  },
+  "autolinking": {
+    "Test": {
+      "swift": "Test",
+      "kotlin": "Test"
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}

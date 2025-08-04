@@ -49,93 +49,9 @@ const amplitudeData = computeAmplitude('/path/to/audio.mp3', 1000);
 console.log('Amplitude data:', amplitudeData);
 ```
 
-### Creating Audio Waveforms
+### Example
 
-```typescript
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { computeAmplitude } from 'react-native-audio-analyzer';
-
-export default function AudioWaveform() {
-  const [amplitudeData, setAmplitudeData] = useState<number[]>([]);
-
-  const analyzeAudio = useCallback(async () => {
-    try {
-      const path = await load(
-        'https://file-examples.com/storage/fe180a8b03688f5559b9baf/2017/11/file_example_MP3_1MG.mp3'
-      );
-      const result = computeAmplitude(path, 100);
-      setAmplitudeData(result);
-    } catch (error) {
-      console.error('Error analyzing audio:', error);
-    }
-  }, []);
-
-  useEffect(() => {
-    analyzeAudio();
-  }, [analyzeAudio]);
-
-  return (
-    <ScrollView horizontal contentContainerStyle={styles.container}>
-      <View style={styles.waveform}>
-        {amplitudeData.map((amplitude, index) => (
-          <View
-            key={index}
-            style={[
-              styles.bar,
-              { height: 500 * amplitude } // Scale the height based on amplitude
-            ]}
-          />
-        ))}
-      </View>
-    </ScrollView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-  },
-  waveform: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: 1,
-  },
-  bar: {
-    width: 3,
-    backgroundColor: '#007AFF',
-    borderRadius: 1,
-  },
-});
-```
-
-### Advanced Usage
-
-```typescript
-import { computeAmplitude } from 'react-native-audio-analyzer';
-
-// Customize the number of amplitude samples
-const highResolution = computeAmplitude('/audio.mp3', 2000); // More detailed
-const lowResolution = computeAmplitude('/audio.mp3', 100);   // Less detailed
-
-// Process the amplitude data for different visualizations
-const normalizedData = highResolution.map(amplitude =>
-  Math.min(amplitude * 100, 1.0) // Normalize to 0-1 range
-);
-
-// Create different visualization styles
-const createWaveform = (data: number[], style: 'bars' | 'line' | 'area') => {
-  switch (style) {
-    case 'bars':
-      return data.map((amp, i) => ({ x: i, y: amp }));
-    case 'line':
-      return data.map((amp, i) => ({ x: i, y: amp }));
-    case 'area':
-      return data.map((amp, i) => ({ x: i, y: amp, height: amp }));
-  }
-};
-```
+📦 Full usage example can be found in the [example](./example) directory.
 
 ## API Reference 📚
 

@@ -1,71 +1,57 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {
-  ActivityIndicator,
-  Alert,
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import AudioAnalyzer, {
-  scale,
-  sample,
-  robustScale,
-  trimmedScale,
-} from 'react-native-audio-analyzer';
-import type { AmplitudeData } from 'react-native-audio-analyzer';
-import ReactNativeBlobUtil from 'react-native-blob-util';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { computeAmplitude } from 'react-native-audio-analyzer';
+import { robustScale, sample, scale, trimmedScale } from '../../src/helpers';
 
 export default function App() {
-  const [result, setResult] = useState<AmplitudeData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<number[]>([]);
 
-  const start = useCallback(async () => {
+  const run = useCallback(async () => {
     try {
-      setIsLoading(true);
-      const response = await ReactNativeBlobUtil.config({
-        fileCache: true,
-      }).fetch(
-        'GET',
-        'https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3',
-        {}
+      const result = computeAmplitude(
+        '/data/data/audioanalyzer.example/files/sample.mp3',
+        100
       );
-      const path = response.path();
-      const data = AudioAnalyzer.analyze(path, 2);
-      setResult(data);
-    } catch (error) {
-      Alert.alert('Error', String(error));
-    } finally {
-      setIsLoading(false);
+      setData(result);
+    } catch (raw) {
+      console.log(raw);
     }
   }, []);
 
-  const amplitudes = result.map((_) => _.amplitude);
+  useEffect(() => {
+    // noinspection JSIgnoredPromiseFromCall
+    run();
+  }, [run]);
 
   const results = [
     {
+      title: 'Original:',
+      data: data.map((value, index) => (
+        <View key={index} style={[styles.item, { height: value * 100 }]} />
+      )),
+    },
+    {
       title: 'Trimmed scale:',
-      data: trimmedScale(amplitudes).map((value, index) => (
+      data: trimmedScale(data, 0, 1).map((value, index) => (
         <View key={index} style={[styles.item, { height: value * 100 }]} />
       )),
     },
     {
       title: 'Robust scale:',
-      data: robustScale(amplitudes).map((value, index) => (
+      data: robustScale(data, 0, 1).map((value, index) => (
         <View key={index} style={[styles.item, { height: value * 100 }]} />
       )),
     },
     {
       title: 'Scale + sample:',
-      data: scale(sample(amplitudes, 35)).map((value, index) => (
+      data: scale(sample(data, 35)).map((value, index) => (
         <View key={index} style={[styles.item, { height: value * 100 }]} />
       )),
     },
     {
       title: 'Scale:',
-      data: scale(amplitudes).map((value, index) => (
+      data: scale(data).map((value, index) => (
         <View key={index} style={[styles.item, { height: value * 100 }]} />
       )),
     },
@@ -73,21 +59,16 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Button title="Start" onPress={start} />
-      {isLoading ? (
-        <ActivityIndicator style={styles.loader} size="large" />
-      ) : (
-        <View>
-          {results.map((_, index) => (
-            <View style={styles.example} key={index}>
-              <Text style={styles.title}>{_.title}</Text>
-              <ScrollView horizontal style={styles.scroll}>
-                <View style={styles.row}>{_.data}</View>
-              </ScrollView>
-            </View>
-          ))}
-        </View>
-      )}
+      <View>
+        {results.map((_, index) => (
+          <View style={styles.example} key={index}>
+            <Text style={styles.title}>{_.title}</Text>
+            <ScrollView horizontal style={styles.scroll}>
+              <View style={styles.row}>{_.data}</View>
+            </ScrollView>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }

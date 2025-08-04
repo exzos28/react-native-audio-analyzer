@@ -1,0 +1,16 @@
+{
+  "cxxNamespace": ["audioanalyzer"],
+  "ios": {
+    "iosModuleName": "AudioAnalyzer"
+  },
+  "android": {
+    "androidNamespace": ["audioanalyzer"],
+    "androidCxxLibName": "audioanalyzer"
+  },
+  "autolinking": {
+    "AudioAnalyzer": {
+      "cpp": "AudioAnalyzer"
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}

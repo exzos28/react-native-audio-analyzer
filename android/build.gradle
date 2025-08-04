@@ -1,16 +1,7 @@
-def WORKING_DIRECTORY = "ffmpeg"
-
-def SO_SRC_URL = "https://github.com/exzos28/ffmpeg-built/archive/refs/tags/6.1.zip"
-//TODO: Change name
-def ARTIFACT_SO_LOCAL = "ffmpeg-built-6.1"
-
-def HEADER_SRC_URL = "https://github.com/exzos28/ffmpeg-headers/archive/refs/tags/5.1.zip"
-//TODO: Change name
-def ARTIFACT_HEADERS_LOCAL = "ffmpeg-headers-5.1"
-
 buildscript {
-  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["AudioAnalyzer_kotlinVersion"]
+  ext.getExtOrDefault = {name ->
+    return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['AudioAnalyzer_' + name]
+  }
 
   repositories {
     google()
@@ -18,12 +9,9 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "com.android.tools.build:gradle:8.7.2"
     // noinspection DifferentKotlinGradleVersion
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-
-    classpath("de.undercouch:gradle-download-task:5.0.1")
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
   }
 }
 
@@ -32,55 +20,19 @@ def reactNativeArchitectures() {
   return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
-def isNewArchitectureEnabled() {
-  return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
-}
-
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
-apply plugin: "de.undercouch.download"
+apply from: '../nitrogen/generated/android/audioanalyzer+autolinking.gradle'
 
-
-if (isNewArchitectureEnabled()) {
-  apply plugin: "com.facebook.react"
-}
-
-def resolveBuildType() {
-  Gradle gradle = getGradle()
-  String tskReqStr = gradle.getStartParameter().getTaskRequests()['args'].toString()
-
-  return tskReqStr.contains('Release') ? 'release' : 'debug'
-}
-
-def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["AudioAnalyzer_" + name]
-}
+apply plugin: "com.facebook.react"
 
 def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["AudioAnalyzer_" + name]).toInteger()
 }
 
-def supportsNamespace() {
-  def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
-  def major = parsed[0].toInteger()
-  def minor = parsed[1].toInteger()
-
-  // Namespace support was added in 7.3.0
-  return (major == 7 && minor >= 3) || major >= 8
-}
-
 android {
-  if (supportsNamespace()) {
-    namespace "com.audioanalyzer"
+  namespace "com.margelo.nitro.audioanalyzer"
 
-    sourceSets {
-      main {
-        manifest.srcFile "src/main/AndroidManifestNew.xml"
-      }
-    }
-  }
-
-  ndkVersion getExtOrDefault("ndkVersion")
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 
   defaultConfig {
@@ -89,15 +41,20 @@ android {
 
     externalNativeBuild {
       cmake {
-        arguments "-DANDROID_STL=c++_shared"
-        cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
+        cppFlags "-frtti -fexceptions -Wall -fstack-protector-all"
+        arguments "-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
         abiFilters (*reactNativeArchitectures())
+
+        buildTypes {
+          debug {
+            cppFlags "-O1 -g"
+          }
+          release {
+            cppFlags "-O2"
+          }
+        }
       }
     }
-  }
-
-  buildFeatures {
-    prefab true
   }
 
   externalNativeBuild {
@@ -107,16 +64,29 @@ android {
   }
 
   packagingOptions {
-    doNotStrip resolveBuildType() == 'debug' ? "**/**/*.so" : ''
     excludes = [
-      "META-INF",
-      "META-INF/**",
-      "**/libjsi.so",
-      "**/libc++_shared.so",
-      "**/libreact_nativemodule_core.so",
-      "**/libturbomodulejsijni.so",
-      "**/libfbjni.so"
+            "META-INF",
+            "META-INF/**",
+            "**/libc++_shared.so",
+            "**/libfbjni.so",
+            "**/libjsi.so",
+            "**/libfolly_json.so",
+            "**/libfolly_runtime.so",
+            "**/libglog.so",
+            "**/libhermes.so",
+            "**/libhermes-executor-debug.so",
+            "**/libhermes_executor.so",
+            "**/libreactnative.so",
+            "**/libreactnativejni.so",
+            "**/libturbomodulejsijni.so",
+            "**/libreact_nativemodule_core.so",
+            "**/libjscexecutor.so"
     ]
+  }
+
+  buildFeatures {
+    buildConfig true
+    prefab true
   }
 
   buildTypes {
@@ -134,36 +104,13 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
-
-  tasks.register('downloadAarFile', Download) {
-    src SO_SRC_URL
-    onlyIfNewer true
-    overwrite false
-    dest layout.buildDirectory.file(ARTIFACT_SO_LOCAL)
-  }
-
-  tasks.register('downloadAndUnzipAarFile', Copy) {
-    dependsOn downloadAarFile
-    from zipTree(downloadAarFile.dest)
-    into layout.buildDirectory.dir(WORKING_DIRECTORY)
-  }
-
-  tasks.register('downloadHeaders', Download) {
-    src HEADER_SRC_URL
-    onlyIfNewer true
-    overwrite false
-    dest layout.buildDirectory.file(ARTIFACT_HEADERS_LOCAL)
-  }
-
-  tasks.register('downloadAndUnzipHeaders', Copy) {
-    dependsOn downloadHeaders
-    from zipTree(downloadHeaders.dest)
-    into layout.buildDirectory.dir(WORKING_DIRECTORY)
-  }
-
-  afterEvaluate {
-    preBuild.dependsOn downloadAndUnzipAarFile
-    preBuild.dependsOn downloadAndUnzipHeaders
+  sourceSets {
+    main {
+      java.srcDirs += [
+        "generated/java",
+        "generated/jni"
+      ]
+    }
   }
 }
 
@@ -175,10 +122,8 @@ repositories {
 def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
-  // For < 0.71, this will be from the local maven repo
-  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
-  //noinspection GradleDynamicVersion
-  implementation "com.facebook.react:react-native:+"
+  implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation project(":react-native-nitro-modules")
 }
 

@@ -1,16 +1,9 @@
-import { NativeModules } from 'react-native';
-import type { AudioAnalyzerOnLoad } from './AudioAnalyzerOnLoad';
-import type { AmplitudeData, AudioAnalyzerBridge } from './AudioAnalyzerBridge';
+import { NitroModules } from 'react-native-nitro-modules';
+import type { AudioAnalyzer } from './AudioAnalyzer.nitro';
 
-export const AudioAnalyzerModule =
-  NativeModules?.AudioAnalyzerModule as AudioAnalyzerOnLoad;
+const AnalyzerHybridObject =
+  NitroModules.createHybridObject<AudioAnalyzer>('AudioAnalyzer');
 
-AudioAnalyzerModule.install();
-
-// @ts-ignore
-const bridge = global.__EXZOS_ANALYZER__ as unknown as AudioAnalyzerBridge;
-
-export type { AmplitudeData };
-
-export * from './helpers';
-export default bridge;
+export function computeAmplitude(filePath: string, outputSampleCount: number) {
+  return AnalyzerHybridObject.computeAmplitude(filePath, outputSampleCount);
+}

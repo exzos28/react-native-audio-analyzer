@@ -1,54 +1,44 @@
+project(audioanalyzer)
 cmake_minimum_required(VERSION 3.9.0)
 
-project(simple)
+set(PACKAGE_NAME audioanalyzer)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_CXX_STANDARD 20)
 
+# Miniaudio compilation flags
+add_definitions(-DMA_NO_PTHREAD_IN_HEADER=1)
+set(CACHE_DIR ${CMAKE_SOURCE_DIR}/build)
 
-set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
-set (FFMPEG_DIR ${BUILD_DIR}/ffmpeg)
-set (FFMPEG_SO_DIR ${FFMPEG_DIR}/ffmpeg-built-6.1)
-set (FFMPEG_ARCH_DIR ${FFMPEG_SO_DIR}/${ANDROID_ABI})
-set (FFMPEG_HEADERS ${FFMPEG_DIR}/ffmpeg-headers-5.1/include)
+file(GLOB_RECURSE CORE_SRC RELATIVE ${CMAKE_SOURCE_DIR} "./src/main/cpp/*.cpp")
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "../cpp/*.cpp")
 
-add_library(simple
+# Add miniaudio source
+set(MINIAUDIO_SRC "../libs/miniaudio/miniaudio.c")
+
+add_library(
+        ${PACKAGE_NAME}
         SHARED
-        ../cpp/AudioAnalyzer.cpp
-        ../cpp/AnalyzerRuntime.cpp
-        cpp-adapter.cpp
+        ${CORE_SRC}
+        ${SOURCES}
+        ${MINIAUDIO_SRC}
 )
 
-include_directories(
-        ../cpp
-        ${FFMPEG_HEADERS}
+# Add Nitrogen specs :)
+include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/audioanalyzer+autolinking.cmake)
+
+# Set up local includes
+include_directories("src/main/cpp" "../cpp" "../libs/miniaudio")
+
+target_include_directories(${PACKAGE_NAME} PRIVATE "${CACHE_DIR}/download-cache")
+
+find_library(LOG_LIB log)
+find_library(OPENSLES_LIB OpenSLES)
+find_library(ANDROID_LIB android)
+
+# Link all libraries together
+target_link_libraries(
+        ${PACKAGE_NAME}
+        ${LOG_LIB}
+        ${OPENSLES_LIB}
+        ${ANDROID_LIB}
 )
-
-set_target_properties(simple PROPERTIES
-        CXX_STANDARD 20
-        CXX_STANDARD_REQUIRED ON
-        CXX_EXTENSIONS OFF
-        POSITION_INDEPENDENT_CODE ON
-)
-
-find_package(ReactAndroid REQUIRED CONFIG)
-find_package(fbjni REQUIRED CONFIG)
-
-target_link_libraries(simple
-        ReactAndroid::jsi
-        ReactAndroid::turbomodulejsijni
-        ReactAndroid::react_nativemodule_core
-        android
-        fbjni::fbjni
-)
-
-include_directories(${FFMPEG_ARCH_DIR}/include)
-
-add_library(avcodec SHARED IMPORTED)
-add_library(avformat SHARED IMPORTED)
-add_library(avutil SHARED IMPORTED)
-add_library(swresample SHARED IMPORTED)
-
-set_target_properties(avcodec PROPERTIES IMPORTED_LOCATION ${FFMPEG_ARCH_DIR}/libavcodec.so)
-set_target_properties(avformat PROPERTIES IMPORTED_LOCATION ${FFMPEG_ARCH_DIR}/libavformat.so)
-set_target_properties(avutil PROPERTIES IMPORTED_LOCATION ${FFMPEG_ARCH_DIR}/libavutil.so)
-set_target_properties(swresample PROPERTIES IMPORTED_LOCATION ${FFMPEG_ARCH_DIR}/libswresample.so)
-
-target_link_libraries(simple avcodec avformat avutil swresample log)

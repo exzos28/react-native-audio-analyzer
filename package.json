@@ -17,6 +17,7 @@
     "lib",
     "libs/miniaudio/miniaudio.c",
     "libs/miniaudio/miniaudio.h",
+    "scripts",
     "android",
     "ios",
     "cpp",

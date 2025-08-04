@@ -8,7 +8,7 @@ This package offers robust tools that enable developers to process audio files e
 
 With this library, unleash creativity by generating captivating audio waveforms from your audio tracks, providing an engaging visual representation of sound.
 
-![Audio Waveform Example](https://github.com/exzos28/react-native-audio-analyzer/raw/main/images/image.png)
+<img src="images/image.png" width="300" alt='Audio Waveform Example'>
 
 ## Features ✨
 

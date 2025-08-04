@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { computeAmplitude } from 'react-native-audio-analyzer';
+import { load, computeAmplitude } from '../../src';
 import { robustScale, sample, scale, trimmedScale } from '../../src/helpers';
 
 export default function App() {
@@ -9,10 +9,10 @@ export default function App() {
 
   const run = useCallback(async () => {
     try {
-      const result = computeAmplitude(
-        '/data/data/audioanalyzer.example/files/sample.mp3',
-        100
+      const path = await load(
+        'https://file-examples.com/storage/fe180a8b03688f5559b9baf/2017/11/file_example_MP3_1MG.mp3'
       );
+      const result = computeAmplitude(path, 100);
       setData(result);
     } catch (raw) {
       console.log(raw);

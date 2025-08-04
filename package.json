@@ -1,7 +1,7 @@
 {
   "name": "react-native-audio-analyzer",
   "version": "3.0.0-alpha.1",
-  "description": "Audio analyzer",
+  "description": "A powerful React Native library for audio analysis, waveform visualization, and amplitude data extraction. Create stunning audio visualizations with high-performance native C++ implementation.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
   "exports": {
@@ -47,19 +47,38 @@
   },
   "keywords": [
     "react-native",
+    "audio",
+    "waveform",
+    "visualization",
+    "amplitude",
+    "audio-analysis",
+    "audio-visualizer",
+    "music-player",
+    "audio-player",
+    "sound-analysis",
+    "audio-processing",
+    "miniaudio",
     "ios",
-    "android"
+    "android",
+    "typescript",
+    "native-module",
+    "nitro-modules"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/exzos28/react-native-audio-analyzer.git"
   },
-  "author": "exzos <oleksandr.kurinnyi.work@gmail.com> (https://github.com/exzos28)",
+  "author": {
+    "name": "Oleksandr Kurinnyi",
+    "email": "oleksandr.kurinnyi.work@gmail.com",
+    "url": "https://github.com/exzos28"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/exzos28/react-native-audio-analyzer/issues"
   },
   "homepage": "https://github.com/exzos28/react-native-audio-analyzer#readme",
+  "readme": "README.md",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -166,5 +185,22 @@
     "languages": "kotlin-swift",
     "type": "nitro-module",
     "version": "0.52.0"
-  }
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/exzos28"
+  },
+  "maintainers": [
+    {
+      "name": "exzos",
+      "email": "oleksandr.kurinnyi.work@gmail.com"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "exzos",
+      "email": "oleksandr.kurinnyi.work@gmail.com",
+      "url": "https://github.com/exzos28"
+    }
+  ]
 }

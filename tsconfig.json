@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-test": ["./src/index"]
+      "react-native-audio-analyzer": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

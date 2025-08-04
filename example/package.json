@@ -1,5 +1,5 @@
 {
-  "name": "react-native-test-example",
+  "name": "react-native-audio-analyzer-example",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,7 +12,7 @@
   "dependencies": {
     "react": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-nitro-modules": "^0.25.2"
+    "react-native-nitro-modules": "^0.27.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -25,7 +25,7 @@
     "@react-native/metro-config": "0.79.2",
     "@react-native/typescript-config": "0.79.2",
     "@types/react": "^19.0.0",
-    "react-native-builder-bob": "^0.40.11",
+    "react-native-builder-bob": "^0.40.13",
     "react-native-monorepo-config": "^0.1.9"
   },
   "engines": {

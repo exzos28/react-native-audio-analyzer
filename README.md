@@ -1,20 +1,22 @@
-# react-native-test
+# react-native-audio-analyzer
 
-test
+Audio analyzer
 
 ## Installation
 
+
 ```sh
-npm install react-native-test react-native-nitro-modules
+npm install react-native-audio-analyzer react-native-nitro-modules
 
 > `react-native-nitro-modules` is required as this library relies on [Nitro Modules](https://nitro.margelo.com/).
 ```
+
 
 ## Usage
 
 
 ```js
-import { multiply } from 'react-native-test';
+import { multiply } from 'react-native-audio-analyzer';
 
 // ...
 

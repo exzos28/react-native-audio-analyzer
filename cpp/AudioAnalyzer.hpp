@@ -1,9 +1,9 @@
-#include "HybridAnalyzerSpec.hpp"
+#include "HybridAudioAnalyzerSpec.hpp"
 #include <string>
 #include <vector>
 
-namespace margelo::nitro::analyzer {
-    struct AudioAnalyzer: public HybridAnalyzerSpec {
+namespace margelo::nitro::audioanalyzer {
+struct AudioAnalyzer: public audioanalyzer::HybridAudioAnalyzerSpec {
         AudioAnalyzer() : HybridObject(TAG) {}
         std::vector<double> computeAmplitude(const std::string& filePath, double samplesPerBlock) override;
 

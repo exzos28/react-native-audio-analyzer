@@ -1,11 +1,11 @@
-package com.margelo.nitro.analyzer
+package com.margelo.nitro.audioanalyzer
 
 import com.facebook.react.TurboReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfoProvider
 
-class AnalyzerPackage : TurboReactPackage() {
+class AudioAnalyzerPackage : TurboReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
         return null
     }
@@ -16,7 +16,7 @@ class AnalyzerPackage : TurboReactPackage() {
 
     companion object {
         init {
-            System.loadLibrary("analyzer")
+            System.loadLibrary("audioanalyzer")
         }
     }
 }

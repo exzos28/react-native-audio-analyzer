@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "TestExample.app"
-               BlueprintName = "TestExample"
-               ReferencedContainer = "container:TestExample.xcodeproj">
+               BuildableName = "AudioAnalyzerExample.app"
+               BlueprintName = "AudioAnalyzerExample"
+               ReferencedContainer = "container:AudioAnalyzerExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "TestExampleTests.xctest"
-               BlueprintName = "TestExampleTests"
-               ReferencedContainer = "container:TestExample.xcodeproj">
+               BuildableName = "AudioAnalyzerExampleTests.xctest"
+               BlueprintName = "AudioAnalyzerExampleTests"
+               ReferencedContainer = "container:AudioAnalyzerExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TestExample.app"
-            BlueprintName = "TestExample"
-            ReferencedContainer = "container:TestExample.xcodeproj">
+            BuildableName = "AudioAnalyzerExample.app"
+            BlueprintName = "AudioAnalyzerExample"
+            ReferencedContainer = "container:AudioAnalyzerExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TestExample.app"
-            BlueprintName = "TestExample"
-            ReferencedContainer = "container:TestExample.xcodeproj">
+            BuildableName = "AudioAnalyzerExample.app"
+            BlueprintName = "AudioAnalyzerExample"
+            ReferencedContainer = "container:AudioAnalyzerExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { computeAmplitude } from 'react-native-test';
+import { computeAmplitude } from 'react-native-audio-analyzer';
 
-export default function App() {
+export default function Index() {
   const [data, setData] = useState<number[]>([]);
   const run = useCallback(async () => {
     try {
       const result = computeAmplitude(
-        '/data/data/test.example/files/sample-15s.mp3',
+        '/data/data/audioanalyzer.example/files/sample.mp3',
         1000
       );
       setData(result);

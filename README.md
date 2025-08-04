@@ -139,6 +139,27 @@ const createWaveform = (data: number[], style: 'bars' | 'line' | 'area') => {
 
 ## API Reference 📚
 
+### `load(url: string): Promise<string>`
+
+Load and cache audio file.
+
+#### Parameters
+
+- `url` (string): Url to the audio file to be cached
+
+#### Returns
+
+- `Promise<string>`: Promise with absolute file system path to cached file.
+
+#### Example
+
+```typescript
+const path = load('https://file-examples.com/storage/fe180a8b03688f5559b9baf/2017/11/file_example_MP3_1MG.mp3', 500);
+// Returns: /data/user/0/audioanalyzer.example/cache/9349e0a758090499d982e320a10273ab.audio
+```
+
+---
+
 ### `computeAmplitude(filePath: string, outputSampleCount: number): number[]`
 
 Analyzes an audio file and returns an array of amplitude values.
@@ -155,7 +176,7 @@ Analyzes an audio file and returns an array of amplitude values.
 #### Example
 
 ```typescript
-const amplitudes = computeAmplitude('/path/to/song.mp3', 500);
+const amplitudes = computeAmplitude(path, 500);
 // Returns: [0.1, 0.3, 0.5, 0.2, ...] (500 values)
 ```
 

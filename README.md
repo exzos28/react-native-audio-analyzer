@@ -33,6 +33,8 @@ yarn add react-native-audio-analyzer react-native-nitro-modules
 
 ```bash
 cd ios && pod install
+# or
+bundle exec pod install
 ```
 
 ## Usage 🎶

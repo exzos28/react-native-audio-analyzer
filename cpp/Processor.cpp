@@ -1,15 +1,15 @@
-#include "AudioAnalyzer.hpp"
+#include "Processor.hpp"
 #include "miniaudio.h"
 
 #include <cmath>
 #include <iostream>
 #include <algorithm>
 
-#define LOG_TAG "HybridAudioAnalyzer"
+#define LOG_TAG "HybridProcessor"
 
 using namespace margelo::nitro::audioanalyzer;
 
-bool AudioAnalyzer::decodeAudioFile(const std::string &filePath, std::vector<float> &pcmData, unsigned int &sampleRate)
+bool Processor::decodeAudioFile(const std::string &filePath, std::vector<float> &pcmData, unsigned int &sampleRate)
 {
     ma_decoder decoder;
     ma_decoder_config config = ma_decoder_config_init(ma_format_f32, 0, 0);
@@ -51,7 +51,7 @@ bool AudioAnalyzer::decodeAudioFile(const std::string &filePath, std::vector<flo
     return framesRead > 0;
 }
 
-std::vector<double> AudioAnalyzer::computeAmplitude(const std::string &filePath, double outputSampleCount = 1000)
+std::vector<double> Processor::computeAmplitude(const std::string &filePath, double outputSampleCount = 1000)
 {
     size_t outputSampleCountInt = static_cast<size_t>(outputSampleCount);
     std::vector<float> pcm;

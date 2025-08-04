@@ -1,9 +1,22 @@
 import { NitroModules } from 'react-native-nitro-modules';
-import type { AudioAnalyzer } from './AudioAnalyzer.nitro';
+import type { Processor } from './Processor.nitro';
+import type { FileSystem } from './FileSystem.nitro';
 
-const AnalyzerHybridObject =
-  NitroModules.createHybridObject<AudioAnalyzer>('AudioAnalyzer');
+const AudioAnalyzerHybridObject =
+  NitroModules.createHybridObject<Processor>('Processor');
 
-export function computeAmplitude(filePath: string, outputSampleCount: number) {
-  return AnalyzerHybridObject.computeAmplitude(filePath, outputSampleCount);
+const FileSystemHybridObject =
+  NitroModules.createHybridObject<FileSystem>('FileSystem');
+
+function computeAmplitude(filePath: string, outputSampleCount: number) {
+  return AudioAnalyzerHybridObject.computeAmplitude(
+    filePath,
+    outputSampleCount
+  );
 }
+
+function load(path: string) {
+  return FileSystemHybridObject.load(path);
+}
+
+export { load, computeAmplitude };

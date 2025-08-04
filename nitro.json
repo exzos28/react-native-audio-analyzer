@@ -8,8 +8,12 @@
     "androidCxxLibName": "audioanalyzer"
   },
   "autolinking": {
-    "AudioAnalyzer": {
-      "cpp": "AudioAnalyzer"
+    "Processor": {
+      "cpp": "Processor"
+    },
+    "FileSystem": {
+      "swift": "FileSystem",
+      "kotlin": "FileSystem"
     }
   },
   "ignorePaths": ["node_modules"]

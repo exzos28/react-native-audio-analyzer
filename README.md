@@ -174,12 +174,6 @@ This library supports various audio formats through the miniaudio library:
 - Large audio files are processed in chunks to maintain responsiveness
 - Consider using appropriate `outputSampleCount` values based on your visualization needs
 
-## Platform Support 📱
-
-- ✅ iOS 12.0+
-- ✅ Android API 21+
-- ✅ React Native 0.70+
-
 ## Contributing 🤝
 
 We welcome contributions! Please see our [contributing guide](CONTRIBUTING.md) to learn how to contribute to this repository and the development workflow.

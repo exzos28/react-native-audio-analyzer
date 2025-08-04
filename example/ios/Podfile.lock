@@ -1,5 +1,5 @@
 PODS:
-  - AudioAnalyzer (3.0.0-alpha.0):
+  - AudioAnalyzer (3.0.0-alpha.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1936,7 +1936,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AudioAnalyzer: 78eacfb354d663eaeb96de111c6675e5b37a5ff9
+  AudioAnalyzer: 8219c1530dbcf9fed5d9f3ef1c7cd7d0d20109b3
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6

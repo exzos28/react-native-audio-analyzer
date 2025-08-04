@@ -1,6 +1,6 @@
 {
   "name": "react-native-audio-analyzer",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0",
   "description": "A powerful React Native library for audio analysis, waveform visualization, and amplitude data extraction. Create stunning audio visualizations with high-performance native C++ implementation.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",

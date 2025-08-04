@@ -61,10 +61,10 @@ export default function AudioWaveform() {
 
   const analyzeAudio = useCallback(async () => {
     try {
-      const result = computeAmplitude(
-        '/path/to/your/audio.mp3',
-        1000 // Number of amplitude samples to generate
+      const path = await load(
+        'https://file-examples.com/storage/fe180a8b03688f5559b9baf/2017/11/file_example_MP3_1MG.mp3'
       );
+      const result = computeAmplitude(path, 100);
       setAmplitudeData(result);
     } catch (error) {
       console.error('Error analyzing audio:', error);

@@ -1,0 +1,40 @@
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "examples": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/render-examples.mts",
+    "examples:analyze": "sh scripts/analyze-examples.sh",
+    "start": "yarn examples && docusaurus start",
+    "build": "yarn examples && docusaurus build",
+    "serve": "docusaurus serve",
+    "clear": "docusaurus clear",
+    "typecheck": "yarn examples && tsc",
+    "readme-images": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/render-readme.mts"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@mdx-js/react": "^3.1.0",
+    "clsx": "^2.1.1",
+    "prism-react-renderer": "^2.4.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "docusaurus-plugin-typedoc": "^1.4.3",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.14.1",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=20.0"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
+}

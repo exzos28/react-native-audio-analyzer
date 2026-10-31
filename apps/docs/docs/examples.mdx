@@ -1,0 +1,33 @@
+---
+sidebar_position: 5
+title: Examples
+---
+
+import Waveform from '@site/src/components/Waveform';
+
+# Examples
+
+Every waveform on this page is computed from a real recording by the library itself: the C++ core analyzed the audio, and the JS display functions turned the result into SVG paths when this site was built. The recordings are in the public domain ([sources](https://github.com/exzos28/react-native-audio-analyzer/tree/main/apps/docs/examples)).
+
+## Voice message — 12 s of speech
+
+<Waveform id="voice-chat" variant="bubble" caption="waveformPresets.chat" />
+<Waveform id="voice-peak" variant="bubble" caption="peak metric" />
+<Waveform id="voice-db" variant="bubble" caption="decibel scale" />
+<Waveform id="voice-raw" variant="bubble" caption="raw levels" />
+
+## Reading — 63 s
+
+<Waveform id="story-overview" caption="Overview, waveformPresets.player" />
+<Waveform id="story-zoom" caption="Seconds 20–30" />
+
+## Music — 35 s
+
+<Waveform id="music-rms" caption="RMS" />
+<Waveform id="music-peak" caption="Peak" />
+<Waveform id="music-envelope" caption="Signed envelope" />
+<Waveform id="music-envelope-zoom" caption="Signed envelope, seconds 10–12" />
+
+## Example apps
+
+The repository contains a [bare React Native app](https://github.com/exzos28/react-native-audio-analyzer/tree/main/apps/rn-cli-example) and an [Expo app](https://github.com/exzos28/react-native-audio-analyzer/tree/main/apps/expo-example) with the same demo: a chat bubble drawn with the `chat` preset, and a full waveform with every knob — bar count, metric, scale, reference and zoom — that never decodes again.

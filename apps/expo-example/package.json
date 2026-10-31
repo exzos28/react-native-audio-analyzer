@@ -1,0 +1,39 @@
+{
+  "name": "expo-example",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "prebuild": "expo prebuild --clean",
+    "build:android": "expo prebuild --platform android --no-install && cd android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
+    "build:ios": "expo prebuild --platform ios && xcodebuild -workspace ios/AudioAnalyzerExpo.xcworkspace -scheme AudioAnalyzerExpo -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build",
+    "typecheck": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "expo": "~58.0.21",
+    "expo-dev-client": "~58.0.17",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-audio-analyzer": "workspace:*",
+    "react-native-nitro-modules": "^0.37.1",
+    "react-native-safe-area-context": "~5.10.1"
+  },
+  "devDependencies": {
+    "@react-native/jest-preset": "0.88.1",
+    "@types/jest": "^30.0.0",
+    "@types/react": "~19.2.0",
+    "@types/react-test-renderer": "^19.1.0",
+    "jest": "^30.0.0",
+    "jest-expo": "~58.0.13",
+    "react-native-monorepo-config": "^0.4.0",
+    "react-test-renderer": "19.3.0",
+    "typescript": "^6.0.3"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  }
+}

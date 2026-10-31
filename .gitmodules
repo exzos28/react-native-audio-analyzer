@@ -1,3 +1,4 @@
-[submodule "libs/miniaudio"]
-	path = libs/miniaudio
+[submodule "packages/react-native-audio-analyzer/libs/miniaudio"]
+	path = packages/react-native-audio-analyzer/libs/miniaudio
 	url = https://github.com/mackron/miniaudio.git
+	shallow = true

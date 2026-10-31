@@ -1,34 +1,55 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "globalDependencies": [".nvmrc", ".yarnrc.yml", "tsconfig.base.json"],
+  "globalEnv": ["NODE_ENV"],
+  "tasks": {
+    "nitrogen": {
+      "inputs": ["src/specs/**", "nitro.json"],
+      "outputs": ["nitrogen/**"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["lib/**", "nitrogen/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^nitrogen"],
+      "outputs": []
+    },
+    "test": {
+      "outputs": ["coverage/**"]
+    },
+    "clean": {
+      "cache": false
+    },
     "build:android": {
-      "env": ["ORG_GRADLE_PROJECT_newArchEnabled"],
+      "dependsOn": ["^nitrogen"],
+      "env": ["ANDROID_HOME"],
       "inputs": [
-        "package.json",
-        "android",
-        "!android/build",
-        "src/*.ts",
-        "src/*.tsx",
-        "example/package.json",
-        "example/android",
-        "!example/android/.gradle",
-        "!example/android/build",
-        "!example/android/app/build"
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/android/**",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/cpp/**",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/libs/miniaudio/miniaudio.h",
+        "!android/.gradle/**",
+        "!android/build/**",
+        "!android/app/build/**"
       ],
       "outputs": []
     },
     "build:ios": {
-      "env": ["RCT_NEW_ARCH_ENABLED"],
+      "dependsOn": ["^nitrogen"],
+      "env": [
+        "RCT_REMOVE_LEGACY_ARCH",
+        "RCT_USE_RN_DEP",
+        "RCT_USE_PREBUILT_RNCORE"
+      ],
       "inputs": [
-        "package.json",
-        "*.podspec",
-        "ios",
-        "src/*.ts",
-        "src/*.tsx",
-        "example/package.json",
-        "example/ios",
-        "!example/ios/build",
-        "!example/ios/Pods"
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/ios/**",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/cpp/**",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/*.podspec",
+        "$TURBO_ROOT$/packages/react-native-audio-analyzer/libs/miniaudio/miniaudio.h",
+        "!ios/build/**",
+        "!ios/Pods/**"
       ],
       "outputs": []
     }

@@ -1,0 +1,29 @@
+{
+  "cxxNamespace": ["audioanalyzer"],
+  "ios": {
+    "iosModuleName": "AudioAnalyzer"
+  },
+  "android": {
+    "androidNamespace": ["audioanalyzer"],
+    "androidCxxLibName": "audioanalyzer"
+  },
+  "autolinking": {
+    "AudioAnalyzer": {
+      "all": {
+        "language": "c++",
+        "implementationClassName": "HybridAudioAnalyzer"
+      }
+    },
+    "AudioAnalyzerDownloader": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridAudioAnalyzerDownloader"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridAudioAnalyzerDownloader"
+      }
+    }
+  },
+  "ignorePaths": ["node_modules", "lib"]
+}

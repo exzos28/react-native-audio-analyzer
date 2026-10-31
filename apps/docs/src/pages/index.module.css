@@ -1,0 +1,48 @@
+.hero {
+  padding: 4rem 0 3rem;
+  text-align: center;
+  background: linear-gradient(180deg, var(--ifm-color-primary-lightest) 0%, transparent 100%);
+}
+
+[data-theme='dark'] .hero {
+  background: linear-gradient(180deg, rgba(91, 76, 240, 0.25) 0%, transparent 100%);
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.tagline {
+  max-width: 640px;
+  margin: 0 auto 2rem;
+  font-size: 1.2rem;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.demo {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 3rem 0;
+}
+
+.feature h3 {
+  margin-bottom: 0.5rem;
+}
+
+.quickStart {
+  max-width: 760px;
+  margin: 0 auto 4rem;
+}

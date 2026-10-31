@@ -1,0 +1,45 @@
+export {
+  analyzeAudio,
+  clearCache,
+  getAudioInfo,
+  getCacheSize,
+  load,
+  type AnalyzeOptions,
+  type AudioInfo,
+  type AudioSource,
+  type LoadOptions,
+} from './analyzer';
+export {
+  fitBars,
+  normalize,
+  normalizeMinMax,
+  peaksLevel,
+  resample,
+  resampleMinMax,
+  waveformPath,
+  type LevelOptions,
+  type Metric,
+  type MinMax,
+  type NormalizeOptions,
+  type RangeOptions,
+  type ResampleOptions,
+  type WaveformPathOptions,
+} from './display';
+export {
+  decodePeaks,
+  encodePeaks,
+  peaksDuration,
+  peaksStartTime,
+  type EncodePeaksOptions,
+  type PeakChannel,
+  type Peaks,
+  type PeaksBits,
+} from './peaks';
+export {
+  useWaveform,
+  waveformPresets,
+  type UseWaveformOptions,
+  type WaveformNormalizeOptions,
+  type WaveformState,
+  type WaveformStatus,
+} from './useWaveform';

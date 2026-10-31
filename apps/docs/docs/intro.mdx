@@ -1,0 +1,46 @@
+---
+slug: /intro
+sidebar_position: 1
+title: Introduction
+---
+
+import Waveform from '@site/src/components/Waveform';
+
+# react-native-audio-analyzer
+
+Waveforms and audio levels for React Native. The library decodes an audio file once — natively, off the JS thread — into compact per-bucket statistics. Drawing it at any size, zoom level or style is then a cheap JavaScript computation.
+
+```tsx
+import { useWaveform, waveformPresets } from 'react-native-audio-analyzer';
+
+function VoiceMessage({ url }: { url: string }) {
+  const { bars } = useWaveform(url, { ...waveformPresets.chat, barCount: 40 });
+  return <Bars values={bars ?? []} />; // 40 numbers, 0…1
+}
+```
+
+## What it looks like
+
+A voice message drawn with `waveformPresets.chat`, an overview of a minute-long reading and a zoomed-in piece of music. All three are real analyses of public-domain recordings, rendered by this library — see more in [Examples](./examples).
+
+<Waveform id="voice-chat" variant="bubble" showCode={false} caption="Voice message, 40 bars: phrases and pauses are easy to tell apart." />
+<Waveform id="story-overview" showCode={false} caption="63-second reading, 120 bars (waveformPresets.player)." />
+<Waveform id="music-envelope-zoom" showCode={false} caption="Two seconds of music as a signed envelope (resampleMinMax): individual notes are visible." />
+
+## What you get
+
+- **Decode once, render many.** [`analyzeAudio`](./api/functions/analyzeAudio) returns [`Peaks`](./api/interfaces/Peaks) — min, max and RMS per bucket. [`resample`](./api/functions/resample) turns them into any number of bars over any time range.
+- **Presets and knobs.** [`waveformPresets`](./guides/chat-bubbles#presets) are plain option objects for chat bubbles, players and editors. Every option can be overridden or set from scratch.
+- **Native and non-blocking.** One C++ core on [miniaudio](https://miniaud.io) for iOS and Android, built with [Nitro Modules](https://nitro.margelo.com). Progress reporting and `AbortSignal` cancellation included.
+- **Any source.** File paths, `file://` URIs, `http(s)://` URLs (downloaded and cached), URLs with headers and in-memory `ArrayBuffer`s.
+- **Display math done right.** Peaks are never dropped or drawn twice, RMS is weighted by frames, and the scale is computed over the whole file so zooming never makes the waveform jump. See [Metrics and scaling](./concepts/metrics-and-scaling).
+
+## Supported formats
+
+WAV, FLAC, MP3 and OGG Vorbis on every platform, plus AAC/M4A and anything else iOS or Android can decode. See [Supported formats](./formats) for the full table.
+
+## Next steps
+
+- [Install the library](./installation) in a bare React Native or Expo app.
+- Draw a [chat bubble](./guides/chat-bubbles) in a few lines, or build a [player with zoom](./guides/players-and-zoom).
+- Browse the [examples](./examples) rendered from real recordings.

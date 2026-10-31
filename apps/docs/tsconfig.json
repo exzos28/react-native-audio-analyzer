@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
+    "types": ["node", "@docusaurus/module-type-aliases", "@docusaurus/theme-classic"],
+    "paths": { "@site/*": ["./*"] },
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src", "scripts", "*.ts"],
+  "exclude": [".docusaurus", "build"]
+}

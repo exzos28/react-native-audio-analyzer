@@ -1,0 +1,170 @@
+{
+  "name": "react-native-audio-analyzer",
+  "version": "3.1.0",
+  "description": "Fast native audio waveform and amplitude extraction for React Native, powered by Nitro Modules and miniaudio.",
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "exports": {
+    ".": {
+      "react-native-audio-analyzer-source": "./src/index.ts",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "libs/miniaudio/miniaudio.h",
+    "libs/miniaudio/extras/stb_vorbis.c",
+    "libs/miniaudio/LICENSE",
+    "nitrogen",
+    "nitro.json",
+    "*.podspec",
+    "!cpp/tests",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
+  "scripts": {
+    "build": "bob build",
+    "prepare": "bob build",
+    "prepack": "node ./scripts/copy-root-docs.mjs",
+    "nitrogen": "nitrogen",
+    "typecheck": "tsc",
+    "test": "jest",
+    "test:cpp": "cmake -S cpp/tests -B cpp/tests/build -DCMAKE_BUILD_TYPE=Debug && cmake --build cpp/tests/build --parallel && ctest --test-dir cpp/tests/build --output-on-failure",
+    "clean": "del-cli android/build lib nitrogen cpp/tests/build"
+  },
+  "keywords": [
+    "react-native",
+    "audio",
+    "waveform",
+    "amplitude",
+    "audio-analysis",
+    "audio-visualization",
+    "visualizer",
+    "peaks",
+    "mp3",
+    "wav",
+    "flac",
+    "miniaudio",
+    "nitro",
+    "nitro-modules",
+    "expo",
+    "ios",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exzos28/react-native-audio-analyzer.git",
+    "directory": "packages/react-native-audio-analyzer"
+  },
+  "author": "exzos <oleksandr.kurinnyi.work@gmail.com> (https://github.com/exzos28)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/exzos28/react-native-audio-analyzer/issues"
+  },
+  "homepage": "https://github.com/exzos28/react-native-audio-analyzer#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/exzos28"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^19.2.0",
+    "@types/react-test-renderer": "^19.1.0",
+    "babel-jest": "^29.7.0",
+    "del-cli": "^8.0.1",
+    "jest": "^29.7.0",
+    "nitrogen": "^0.37.1",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-builder-bob": "^0.44.1",
+    "react-native-nitro-modules": "^0.37.1",
+    "react-test-renderer": "19.3.0",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "react-native-nitro-modules": "^0.37.1"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "custom",
+        {
+          "script": "nitrogen",
+          "clean": "nitrogen/"
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.test.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/__tests__/**",
+      "!src/specs/**"
+    ],
+    "transform": {
+      "^.+\\.ts$": [
+        "babel-jest",
+        {
+          "configFile": false,
+          "presets": [
+            "@babel/preset-typescript"
+          ],
+          "plugins": [
+            "@babel/plugin-transform-modules-commonjs"
+          ]
+        }
+      ]
+    }
+  },
+  "create-react-native-library": {
+    "type": "nitro-module",
+    "languages": "kotlin-swift",
+    "tools": [
+      "eslint",
+      "jest",
+      "lefthook"
+    ],
+    "version": "0.64.0"
+  }
+}

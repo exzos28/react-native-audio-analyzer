@@ -1,0 +1,55 @@
+---
+sidebar_position: 2
+title: Players and zoom
+---
+
+import Waveform from '@site/src/components/Waveform';
+
+# Players and zoom
+
+A track overview needs a stable picture of the whole file; a zoomed view needs detail. Both come from one analysis.
+
+```tsx
+import { useWaveform, waveformPresets } from 'react-native-audio-analyzer';
+
+function Scrubber({ url, zoom }: { url: string; zoom: { start: number; end: number } | null }) {
+  const { bars, progress, status } = useWaveform(url, {
+    ...waveformPresets.player,
+    barCount: 120,
+    view: zoom ?? undefined, // changing the view never decodes again
+  });
+  // …
+}
+```
+
+<Waveform id="story-overview" caption="A 63-second reading with the player preset." />
+<Waveform id="story-zoom" caption="Seconds 20–30 of the same analysis. The scale is the same as above: the reference level is computed over the whole file." />
+
+## Resolution
+
+The analysis resolution is set by `maxBuckets` (or an exact `framesPerBucket`). Buckets are at least 256 frames (≈ 5.8 ms at 44.1 kHz). For deep zoom into long files, use the `editor` preset or a larger `maxBuckets`; memory is 12 bytes per bucket and channel.
+
+When you zoom in beyond the analyzed resolution, neighbouring bars repeat the bucket they fall into. Analyze just the visible range for even more detail:
+
+```ts
+const detail = await analyzeAudio(url, { start: 20, end: 30, framesPerBucket: 32 });
+```
+
+## Without the hook
+
+```ts
+import { analyzeAudio, normalize, peaksLevel, resample } from 'react-native-audio-analyzer';
+
+const peaks = await analyzeAudio(url, {
+  maxBuckets: 10_000,
+  onProgress: (fraction) => setProgress(fraction),
+});
+const reference = peaksLevel(peaks, { percentile: 0.995 });
+const overview = normalize(resample(peaks, 120), { reference });
+const detail = normalize(resample(peaks, 120, { start: 20, end: 30 }), { reference });
+```
+
+## Music
+
+<Waveform id="music-rms" caption="Music, RMS. Mastered music has a nearly constant level, so overviews look even; zoom in to see the rhythm." />
+<Waveform id="music-envelope-zoom" caption="Two seconds of the same track as a signed envelope: individual notes become visible." />

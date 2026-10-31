@@ -1,0 +1,9 @@
+# Copied from the monorepo root by `prepack` (scripts/copy-root-docs.mjs)
+/README.md
+/LICENSE
+
+# Host C++ test build
+/cpp/tests/build/
+
+# Android test builds (cpp/tests/run-android.sh)
+/cpp/tests/build-android-*/

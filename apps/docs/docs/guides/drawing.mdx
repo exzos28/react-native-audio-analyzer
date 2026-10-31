@@ -1,0 +1,63 @@
+---
+sidebar_position: 3
+title: Drawing
+---
+
+import Waveform from '@site/src/components/Waveform';
+
+# Drawing waveforms
+
+The library gives you numbers; you choose how to draw them.
+
+## Views
+
+A row of `View`s is the simplest option and fine for a few dozen bars:
+
+```tsx
+{bars.map((value, index) => (
+  <View key={index} style={{ width: 3, height: Math.max(2, value * 40), borderRadius: 1.5 }} />
+))}
+```
+
+Use [`fitBars`](../api/functions/fitBars) to fill a width: `fitBars(width, 3, 2)` returns how many 3-pixel bars with 2-pixel gaps fit.
+
+## SVG or Skia
+
+For hundreds of bars, draw one path. [`waveformPath`](../api/functions/waveformPath) returns SVG path data for [react-native-svg](https://github.com/software-mansion/react-native-svg) or [Skia](https://shopify.github.io/react-native-skia/):
+
+```tsx
+import Svg, { Path } from 'react-native-svg';
+import { normalize, resample, waveformPath } from 'react-native-audio-analyzer';
+
+const d = waveformPath(normalize(resample(peaks, 160)), { width: 320, height: 48, gap: 1 });
+
+<Svg width={320} height={48}>
+  <Path d={d} fill="#5B4CF0" />
+</Svg>;
+```
+
+```tsx
+// Skia
+const path = Skia.Path.MakeFromSVGString(d);
+```
+
+Every picture on this site is a `waveformPath` result.
+
+## Asymmetric envelope
+
+[`resampleMinMax`](../api/functions/resampleMinMax) keeps the signed minimum and maximum under every bar — the classic look of an audio editor:
+
+```ts
+import { normalizeMinMax, resampleMinMax, waveformPath } from 'react-native-audio-analyzer';
+
+const envelope = normalizeMinMax(resampleMinMax(peaks, 360));
+const d = waveformPath(envelope, { width: 720, height: 64, gap: 0 });
+```
+
+<Waveform id="music-envelope" />
+
+## Area instead of bars
+
+```ts
+waveformPath(values, { width, height, style: 'area' });
+```

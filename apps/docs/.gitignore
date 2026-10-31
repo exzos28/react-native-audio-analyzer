@@ -1,0 +1,8 @@
+# Docusaurus
+/build
+/.docusaurus
+/.cache-loader
+
+# Generated at build time (yarn examples / TypeDoc)
+/src/generated
+/docs/api

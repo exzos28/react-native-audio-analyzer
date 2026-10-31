@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "AudioAnalyzerExpo",
+    "slug": "audio-analyzer-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "audioanalyzer.expoexample",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "audioanalyzer.expoexample"
+    },
+    "plugins": ["expo-dev-client"]
+  }
+}

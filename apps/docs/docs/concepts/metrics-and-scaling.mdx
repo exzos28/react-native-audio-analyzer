@@ -1,0 +1,53 @@
+---
+sidebar_position: 2
+title: Metrics and scaling
+---
+
+import Waveform from '@site/src/components/Waveform';
+
+# Metrics and scaling
+
+Two choices shape a waveform: which **metric** each bar shows, and how values are **scaled** to the height you draw.
+
+## Metrics
+
+| Metric | Value per bar | Looks like |
+| --- | --- | --- |
+| `rms` (default) | root mean square, weighted by frames | perceived loudness; speech and music keep their shape |
+| `peak` | largest absolute sample | classic audio-editor envelope; dense material looks blocky |
+| envelope ([`resampleMinMax`](../api/functions/resampleMinMax)) | signed minimum and maximum | asymmetric waveform, shows clipping and DC offset |
+
+<Waveform id="voice-chat" variant="bubble" caption="rms" showCode={false} />
+<Waveform id="voice-peak" variant="bubble" caption="peak" showCode={false} />
+
+### No peak lost, none doubled
+
+With `peak` and the envelope, every bucket belongs to the bar that contains its midpoint. When downsampling, each transient appears in exactly one bar — it is never skipped (as with picking every *n*-th value) and never drawn in two neighbouring bars. When zoomed in beyond the analyzed resolution, bars take the bucket under their center.
+
+`rms` averages power over each bar, weighting buckets by how many frames of them fall into the bar, so the result does not depend on how buckets and bars line up.
+
+## Scaling
+
+[`normalize`](../api/functions/normalize) maps levels to 0…1:
+
+- `scale: 'linear'` (default) divides by a reference level. Silence stays at 0 and proportions are kept.
+- `scale: 'db'` maps `floorDb`…0 dB *relative to the reference* to 0…1. It lifts quiet material, but compressed music and speech fill most of the height.
+
+<Waveform id="voice-db" variant="bubble" caption="scale: 'db'" showCode={false} />
+<Waveform id="voice-raw" variant="bubble" caption="no scaling: raw RMS of a normal recording" showCode={false} />
+
+### The reference level
+
+By default `normalize` divides by the largest value it is given. That makes the scale depend on what is visible: zoom into a quiet passage and it is stretched to full height; change the bar count and the picture shifts.
+
+[`peaksLevel`](../api/functions/peaksLevel) computes the reference over all buckets of the analysis instead:
+
+```ts
+const reference = peaksLevel(peaks, { metric: 'rms', percentile: 0.99 });
+normalize(resample(peaks, 120, { start: 20, end: 30 }), { reference });
+```
+
+`percentile` below 1 ignores the loudest buckets — a click, a plosive, a door slam — so they don't flatten everything else; values above the reference are clamped. `useWaveform` always computes its reference this way.
+
+<Waveform id="story-overview" caption="Whole recording" showCode={false} />
+<Waveform id="story-zoom" caption="Seconds 20–30, same reference" showCode={false} />

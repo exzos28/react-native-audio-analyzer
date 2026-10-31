@@ -1,0 +1,97 @@
+ext.AudioAnalyzer = [
+  minSdkVersion: 24,
+  compileSdkVersion: 36
+]
+
+ext.getExtOrDefault = { prop ->
+  if (rootProject.ext.has(prop)) {
+    return rootProject.ext.get(prop)
+  }
+
+  return AudioAnalyzer[prop]
+}
+
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
+apply plugin: "com.android.library"
+
+if (project.extensions.findByName("kotlin") == null) {
+  apply plugin: "kotlin-android"
+}
+
+apply from: '../nitrogen/generated/android/audioanalyzer+autolinking.gradle'
+
+apply plugin: "com.facebook.react"
+
+android {
+  namespace "com.margelo.nitro.audioanalyzer"
+
+  compileSdkVersion getExtOrDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrDefault("minSdkVersion")
+
+    externalNativeBuild {
+      cmake {
+        cppFlags "-frtti -fexceptions -Wall -fstack-protector-all"
+        arguments "-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+        abiFilters (*reactNativeArchitectures())
+
+        buildTypes {
+          debug {
+            cppFlags "-O1 -g"
+          }
+          release {
+            cppFlags "-O2"
+          }
+        }
+      }
+    }
+  }
+
+  if (rootProject.ext.has("ndkVersion")) {
+    ndkVersion rootProject.ext.ndkVersion
+  }
+
+  externalNativeBuild {
+    cmake {
+      path "CMakeLists.txt"
+    }
+  }
+
+  packaging {
+    resources {
+      excludes += [
+        "META-INF",
+        "META-INF/**"
+      ]
+    }
+
+    jniLibs {
+      excludes += [
+        "**/libc++_shared.so",
+        "**/libfbjni.so",
+        "**/libjsi.so",
+        "**/libfolly_json.so",
+        "**/libfolly_runtime.so",
+        "**/libglog.so",
+        "**/libhermes.so",
+        "**/libreactnative.so"
+      ]
+    }
+  }
+
+  buildFeatures {
+    prefab true
+  }
+}
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+  implementation project(":react-native-nitro-modules")
+
+  testImplementation "junit:junit:4.13.2"
+}

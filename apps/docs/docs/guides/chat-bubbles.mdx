@@ -1,0 +1,73 @@
+---
+sidebar_position: 1
+title: Chat bubbles
+---
+
+import Waveform from '@site/src/components/Waveform';
+
+# Chat bubbles and list rows
+
+Voice messages show a few dozen bars, often many at once in a list. They need a fast analysis, little memory, and bars that follow the voice rather than the loudest click.
+
+## Presets
+
+```tsx
+import { StyleSheet, View } from 'react-native';
+import { useWaveform, waveformPresets } from 'react-native-audio-analyzer';
+
+export function VoiceMessageWaveform({ url }: { url: string }) {
+  const { bars } = useWaveform(url, { ...waveformPresets.chat, barCount: 40 });
+  return (
+    <View style={styles.row}>
+      {(bars ?? []).map((value, index) => (
+        <View key={index} style={[styles.bar, { height: Math.max(3, value * 32) }]} />
+      ))}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  row: { height: 32, flexDirection: 'row', alignItems: 'center', gap: 2 },
+  bar: { width: 3, borderRadius: 1.5, backgroundColor: '#5B4CF0' },
+});
+```
+
+<Waveform id="voice-chat" variant="bubble" caption="12 seconds of speech with waveformPresets.chat: phrases and pauses are easy to tell apart." />
+
+`waveformPresets.chat` is just an object:
+
+```ts
+{
+  analysis: { maxBuckets: 1_000 },                   // ~12 KB of data, fast
+  metric: 'rms',                                     // follows the voice
+  normalize: { scale: 'linear', percentile: 0.99 },  // ignore the loudest 1%
+}
+```
+
+| Preset | For | `maxBuckets` | `metric` | Reference |
+| --- | --- | --- | --- | --- |
+| `chat` | voice messages, list rows | 1 000 | `rms` | 99th percentile |
+| `player` | track overviews, scrubbers | 10 000 | `rms` | 99.5th percentile |
+| `editor` | precise views, deep zoom | 100 000 | `peak` | maximum |
+
+Anything passed after the spread wins, so a preset is a starting point, not a mode:
+
+```tsx
+useWaveform(url, { ...waveformPresets.chat, barCount: width / 5, metric: 'peak' });
+```
+
+`barCount` may be fractional; it is rounded down.
+
+## Why these settings
+
+The same message with other settings:
+
+<Waveform id="voice-peak" variant="bubble" caption="metric: 'peak' — bars follow the loudest sample, so speech looks denser and more uniform." />
+<Waveform id="voice-db" variant="bubble" caption="scale: 'db' — quiet parts are lifted; good for quiet material, too flat for speech." />
+<Waveform id="voice-raw" variant="bubble" caption="normalize: false — raw RMS levels of a normal recording use a fraction of the height." />
+
+See [Metrics and scaling](../concepts/metrics-and-scaling) for the details.
+
+## Many rows
+
+Each `useWaveform` call analyzes its source once and keeps the result while mounted; a list of 50 voice messages with the `chat` preset holds about 600 KB of peaks. Downloads of the same URL are shared, and finished downloads are cached on disk, so scrolling back is fast. To keep results across remounts, store them with [`encodePeaks`](./sources-and-caching#cache-the-analysis).

@@ -1,0 +1,64 @@
+.figure {
+  margin: 1.25rem 0 1.75rem;
+}
+
+.svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.strip {
+  padding: 12px;
+  border: 1px solid var(--waveform-border);
+  border-radius: 12px;
+  background: var(--waveform-surface);
+}
+
+.strip .svg path {
+  fill: var(--waveform-color);
+}
+
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 22px 12px 12px;
+  border-radius: 32px;
+  background: #5b4cf0;
+  max-width: 100%;
+}
+
+.bubble .svg path {
+  fill: #ffffff;
+}
+
+.play {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  position: relative;
+}
+
+.play::after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  border-left: 13px solid #5b4cf0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+}
+
+.caption {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.code {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}

@@ -1,6 +1,6 @@
 {
   "name": "react-native-audio-analyzer",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Fast native audio waveform and amplitude extraction for React Native, powered by Nitro Modules and miniaudio.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",

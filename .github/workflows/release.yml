@@ -41,9 +41,10 @@ jobs:
           pr-title: 'chore: version packages'
           commit-message: 'chore: version packages'
           create-github-releases: true
+        # npm trusted publishing: `yarn npm publish` exchanges this job's
+        # OIDC token (id-token: write) for a short-lived npm token, so there
+        # is no NPM_TOKEN secret. The package's trusted publisher on npmjs.com
+        # must point at this repository and this workflow file (release.yml).
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+          YARN_NPM_PUBLISH_PROVENANCE: true

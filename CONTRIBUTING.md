@@ -97,7 +97,7 @@ yarn changeset
 
 Choose `patch`, `minor` or `major` and write a user-facing summary. It ends up in the changelog and the GitHub release.
 
-After merge, the [Release workflow](.github/workflows/release.yml) opens or updates a **"chore: version packages"** pull request that bumps the version and updates `CHANGELOG.md`. Merging that pull request publishes the package to npm (with provenance) and creates a GitHub release. The workflow needs an `NPM_TOKEN` repository secret.
+After merge, the [Release workflow](.github/workflows/release.yml) opens or updates a **"chore: version packages"** pull request that bumps the version and updates `CHANGELOG.md`. Merging that pull request publishes the package to npm (with provenance) and creates a GitHub release. Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC), so there is no npm token secret: the package's trusted publisher on npmjs.com is this repository's `release.yml` workflow.
 
 ## Commit message convention
 

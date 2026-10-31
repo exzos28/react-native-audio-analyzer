@@ -1,5 +1,11 @@
 # react-native-audio-analyzer
 
+## 4.0.1
+
+### Patch Changes
+
+- [`3623c12`](https://github.com/exzos28/react-native-audio-analyzer/commit/3623c12b5228def09949e77879f256b087f95cb5) Thanks [@exzos28](https://github.com/exzos28)! - The npm package page links to the documentation site.
+
 ## 4.0.0
 
 ### Major Changes
